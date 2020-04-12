@@ -1,0 +1,39 @@
+{
+  "name": "charlestonbieber",
+  "version": "3.0.0",
+  "description": "Dank Twitch bot.",
+  "main": "build/index.js",
+  "scripts": {
+    "start": "node --inspect --harmony -r ts-node/register src/index.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/caglapickaxe/charlestonbieber.git"
+  },
+  "keywords": [
+    "twitch",
+    "irc",
+    "bot"
+  ],
+  "author": "caglapickaxe",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/caglapickaxe/charlestonbieber/issues"
+  },
+  "homepage": "https://github.com/caglapickaxe/charlestonbieber#readme",
+  "dependencies": {
+    "dank-twitch-irc": "^3.0.7",
+    "got": "^10.7.0",
+    "sqlite3": "^4.1.1",
+    "typeorm": "^0.2.24",
+    "ws": "^7.2.3"
+  },
+  "devDependencies": {
+    "@types/node": "^13.11.1",
+    "@types/sqlite3": "^3.1.6",
+    "@types/ws": "^7.2.3",
+    "ts-node": "^8.8.2",
+    "type-fest": "^0.13.1",
+    "typescript": "^3.8.3"
+  }
+}

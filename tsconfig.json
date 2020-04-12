@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "baseUrl": "src",
+    "outDir": "build",
+    "lib": ["ESNext"],
+    "module": "CommonJS",
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "experimentalDecorators": true,
+    "moduleResolution": "Node",
+    "emitDecoratorMetadata": true,
+    "target": "ESNext",
+  },
+  "include": ["src"],
+  "exclude": [
+    "node_modules",
+    "build",
+  ],
+}

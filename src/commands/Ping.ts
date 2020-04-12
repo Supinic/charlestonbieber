@@ -1,0 +1,28 @@
+import { Command, Input, Output } from '../modules';
+import { timeDelta } from '../modules/Util';
+
+export class Ping extends Command {
+  name = 'ping';
+  aliases = [];
+  cooldown = 5000;
+  data = null;
+
+  async execute({ platform }: Input, ...args: string[]): Promise<Output> {
+    let latency: number;
+    
+    if (platform.name === 'Twitch') {
+      const start = process.hrtime.bigint();
+      await platform.client.ping();
+      const end = process.hrtime.bigint();
+
+      latency = Math.round(Number(end - start) / 1e6);
+    }
+
+    const data = {
+      Uptime: timeDelta(new Date(Date.now() - (process.uptime() * 1e3))).split('ago').join('').trim(),
+      Latency: latency + 'ms',
+    };
+
+    return { reply: 'FeelsDankMan 🏓 pong! ' + Object.entries(data).map(i => i.join(': ')).join(' | ') };
+  }
+}
