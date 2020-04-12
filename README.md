@@ -1,7 +1,7 @@
 # CharlestonBieber
 Dank Twitch bot.
 
-## Geting started
+## Getting started
 1. Clone this repository
 2. Install dependencies via `npm install`
 3. Edit the preferences in src/config.json and ormconfig.js
