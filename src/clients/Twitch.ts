@@ -1,5 +1,5 @@
 import { ChatClient, PrivmsgMessage } from 'dank-twitch-irc';
-import { User, Channel, Platform } from '../modules';
+import { Channel, Platform, PlatformNames } from '../modules';
 import { Channel as ChannelEntity } from '../entities';
 
 import {
@@ -8,7 +8,7 @@ import {
 } from '../config.json';
 
 export class Twitch extends Platform {
-  name = 'Twitch';
+  name = PlatformNames.TWITCH;
   client = new ChatClient({ username, password, rateLimits: 'verifiedBot' });
 
   async message(channel: ChannelEntity, message: string) {
