@@ -10,6 +10,7 @@ const timeUnits = {
  * Returns a formatted string, specifying an amount of time delta from current date to provided date.
  * @param target
  * @param skipAffixes if true, the affixes 'in X hours' or 'X hours ago' will be omitted
+ * @author Supinic
  */
 export function timeDelta(target: Date, skipAffixes = false): string {
   const now = new Date();
