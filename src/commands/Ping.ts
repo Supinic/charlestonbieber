@@ -1,5 +1,4 @@
-import { Command, Input, Output } from '../modules';
-import { timeDelta } from '../modules/Util';
+import { Command, Input, Output, timeDelta, Platform, PlatformNames } from '../modules';
 
 export class Ping extends Command {
   name = 'ping';
@@ -10,7 +9,7 @@ export class Ping extends Command {
   async execute({ platform }: Input, ...args: string[]): Promise<Output> {
     let latency: number;
     
-    if (platform.name === 'Twitch') {
+    if (platform === Platform.get(PlatformNames.TWITCH)) {
       const start = process.hrtime.bigint();
       await platform.client.ping();
       const end = process.hrtime.bigint();

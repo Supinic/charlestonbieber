@@ -4,8 +4,12 @@ import { Channel, ChannelLike, User, UserLike, Command } from '.';
 import { PREFIX } from '../config.json';
 import { getConnection } from 'typeorm';
 
+export enum PlatformNames {
+  TWITCH = 'Twitch',
+}
+
 export abstract class Platform {
-  abstract name: string;
+  abstract name: PlatformNames;
   abstract client: any;
 
   abstract async message(channel: ChannelEntity, message: string): Promise<void>;
@@ -19,7 +23,7 @@ export abstract class Platform {
     this.platforms = Object.values(platforms).map(platform => new platform());
   }
 
-  static get(name: string): Platform {
+  static get(name: PlatformNames): Platform {
     return this.platforms.find(i => i.name === name);
   }
 

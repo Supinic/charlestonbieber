@@ -1,7 +1,7 @@
 import WebSocket from 'ws';
 import { JsonObject } from 'type-fest';
 import { randomBytes } from 'crypto';
-import { Platform, Channel } from '../modules';
+import { Platform, Channel, PlatformNames } from '../modules';
 import { TWITCH_PASSWORD as auth_token } from '../config.json';
 import { getConnection } from 'typeorm';
 
@@ -25,6 +25,7 @@ interface MESSAGE_MESSAGE {
 }
 
 export class PubSub extends Platform {
+  // @ts-ignore
   name = 'PubSub';
   client = new WebSocket('wss://pubsub-edge.twitch.tv');
 
@@ -34,7 +35,7 @@ export class PubSub extends Platform {
     this.client.on('open', () => {
       console.info('Connected to PubSub. Subscribing to topics.');
 
-      const channels = Channel.channels.filter(i => i.platform === 'Twitch');
+      const channels = Channel.channels.filter(i => i.platform === PlatformNames.TWITCH);
 
       for (const { name, platformID } of channels) {
         this.send('LISTEN', {
@@ -91,7 +92,7 @@ export class PubSub extends Platform {
               case 'commercial':
                 console.debug(message);
 
-                await Platform.get('Twitch').message(channel, 'asd');
+                await Platform.get(PlatformNames.TWITCH).message(channel, 'asd');
                 break;
             }
           }

@@ -1,4 +1,5 @@
 import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { PlatformNames } from 'modules';
 
 @Entity()
 export class User {
@@ -9,7 +10,7 @@ export class User {
   name: string;
 
   @Column()
-  platform: string;
+  platform: PlatformNames;
 
   @Column()
   platformID: string;
