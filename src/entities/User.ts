@@ -1,5 +1,5 @@
 import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
-import { PlatformNames } from 'modules';
+import { PlatformNames } from '../modules';
 
 @Entity()
 export class User {
