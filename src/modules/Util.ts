@@ -1,11 +1,3 @@
-const timeUnits = {
-  y: { d: 365, h: 8760, m: 525600, s: 31536000, ms: 31536000.0e3 },
-  d: { h: 24, m: 1440, s: 86400, ms: 86400.0e3 },
-  h: { m: 60, s: 3600, ms: 3600.0e3 },
-  m: { s: 60, ms: 60.0e3 },
-  s: { ms: 1.0e3 }
-};
-
 /**
  * Returns a formatted string, specifying an amount of time delta from current date to provided date.
  * @param target
@@ -21,6 +13,13 @@ export function timeDelta(target: Date, skipAffixes = false): string {
   let string: string;
   const delta = Math.abs(now.valueOf() - target.valueOf());
   const [prefix, suffix] = target > now ? ['in ', ''] : ['', ' ago'];
+  const timeUnits = {
+    y: { d: 365, h: 8760, m: 525600, s: 31536000, ms: 31536000e3 },
+    d: { h: 24, m: 1440, s: 86400, ms: 86400e3 },
+    h: { m: 60, s: 3600, ms: 3600e3 },
+    m: { s: 60, ms: 60e3 },
+    s: { ms: 1e3 },
+  };
 
   if (delta < timeUnits.s.ms) {
     string = delta + 'ms';
