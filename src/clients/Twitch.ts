@@ -30,8 +30,6 @@ export class Twitch extends Platform {
       this.client.joinAll(Channel.channels.filter(i => i.platform === this.name).map(i => i.name));
     });
 
-    const messageTypes = ['PRIVMSG', 'WHISPER'];
-
     this.client.on('PRIVMSG', async ({ messageText, senderUserID, channelID, serverTimestamp, senderUsername }: PrivmsgMessage) => await this.handleCommand('message', {
       rawMessage: messageText,
       user: {
