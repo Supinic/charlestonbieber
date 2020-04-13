@@ -5,9 +5,9 @@ export enum BanphraseTypes {
   PAJBOT = 'Pajbot',
 }
 
-export async function pajbot<T = string>({ banphraseURL }: Channel, message: T): Promise<{
+export async function pajbot({ banphraseURL }: Channel, message: string): Promise<{
   banned: boolean;
-  input_message: T;
+  input_message: string;
   banphrase_data?: {
     id: number;
     name: string;
