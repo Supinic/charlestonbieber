@@ -22,12 +22,14 @@ export class Twitch extends Platform {
   constructor() {
     super();
 
-    this.client.on('ready', () => this.client.joinAll(Channel.channels.filter(i => i.platform === this.name).map(i => i.name)));
+    this.client.on('ready', () => {
+      console.info('Connected to Twitch IRC. Joining channels.');
+      this.client.joinAll(Channel.channels.filter(i => i.platform === this.name).map(i => i.name));
+    });
 
     const messageTypes = ['PRIVMSG', 'WHISPER'];
 
     for (const type of messageTypes) {
-      console.log('xd');
       this.client.on(type, async ({ messageText, senderUserID, channelID, serverTimestamp, senderUsername }: PrivmsgMessage) => await this.handleCommand(type === 'PRIVMSG' ? 'message' : 'pm', {
         rawMessage: messageText,
         user: {
