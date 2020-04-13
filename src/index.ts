@@ -1,6 +1,6 @@
 import { createConnection } from 'typeorm';
 import { Platform, User, Channel, Command, StaticCommand } from './modules';
-import { supi } from 'modules/GotInstances';
+import { supi } from './modules/GotInstances';
 
 createConnection().then(async connection => {
   await User.reload(connection);
