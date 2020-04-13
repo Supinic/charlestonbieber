@@ -1,4 +1,4 @@
-import { ChatClient, PrivmsgMessage } from 'dank-twitch-irc';
+import { ChatClient, AlternateMessageModifier, SlowModeRateLimiter, PrivmsgMessage, WhisperMessage } from 'dank-twitch-irc';
 import { Channel, Platform, PlatformNames } from '../modules';
 import { Channel as ChannelEntity, User as UserEntity } from '../entities';
 
@@ -22,6 +22,9 @@ export class Twitch extends Platform {
   constructor() {
     super();
 
+    this.client.use(new AlternateMessageModifier(this.client));
+    this.client.use(new SlowModeRateLimiter(this.client, 20));
+
     this.client.on('ready', () => {
       console.info('Connected to Twitch IRC. Joining channels.');
       this.client.joinAll(Channel.channels.filter(i => i.platform === this.name).map(i => i.name));
@@ -29,17 +32,25 @@ export class Twitch extends Platform {
 
     const messageTypes = ['PRIVMSG', 'WHISPER'];
 
-    for (const type of messageTypes) {
-      this.client.on(type, async ({ messageText, senderUserID, channelID, serverTimestamp, senderUsername }: PrivmsgMessage) => await this.handleCommand(type === 'PRIVMSG' ? 'message' : 'pm', {
-        rawMessage: messageText,
-        user: {
-          platformID: senderUserID,
-          name: senderUsername,
-        },
-        channel: channelID,
-        timestamp: serverTimestamp,
-      }));
-    }
+    this.client.on('PRIVMSG', async ({ messageText, senderUserID, channelID, serverTimestamp, senderUsername }: PrivmsgMessage) => await this.handleCommand('message', {
+      rawMessage: messageText,
+      user: {
+        platformID: senderUserID,
+        name: senderUsername,
+      },
+      channel: channelID,
+      timestamp: serverTimestamp,
+    }));
+
+    this.client.on('WHISPER', async ({ messageText, senderUserID, senderUsername }: WhisperMessage) => await this.handleCommand('pm', {
+      rawMessage: messageText,
+      user: {
+        platformID: senderUserID,
+        name: senderUsername,
+      },
+      channel: null,
+      timestamp: new Date(),
+    }));
 
     this.client.connect();
   }
