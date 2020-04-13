@@ -1,5 +1,4 @@
-import { Command, Input, Output } from '../modules';
-import { randomArray } from '../modules/Util';
+import { Command, Input, Output, randomItem } from '../modules';
 import { getConnection } from 'typeorm';
 import { MCUVerse } from '../entities';
 
@@ -14,7 +13,7 @@ export class RandomMCUVerse extends Command {
       this.data.verses = await getConnection().manager.find(MCUVerse);
     }
 
-    const { sub, time, movieTitle } = randomArray(this.data.verses);
+    const { sub, time, movieTitle } = randomItem(this.data.verses);
     const reply = `${sub} (${movieTitle} ${time})`;
 
     return { reply };

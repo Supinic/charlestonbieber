@@ -48,6 +48,6 @@ export function timeDelta(target: Date, skipAffixes = false): string {
     : prefix + string + suffix;
 }
 
-export function randomArray<T>(array: T[]): T {
+export function randomItem<T>(array: T[]): T {
   return array[Math.floor(Math.random() * array.length)];
 }
