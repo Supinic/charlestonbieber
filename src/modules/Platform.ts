@@ -1,5 +1,5 @@
 import { Channel as ChannelEntity, User as UserEntity } from '../entities';
-import { Channel, ChannelLike, User, UserLike, Command } from '.';
+import { Channel, ChannelLike, User, Command } from '.';
 
 import { PREFIX } from '../config.json';
 import { getConnection } from 'typeorm';
