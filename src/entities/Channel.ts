@@ -1,5 +1,5 @@
 import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
-import { PlatformNames } from '../modules';
+import { PlatformNames, BanphraseTypes } from '../modules';
 
 @Entity()
 export class Channel {
@@ -20,4 +20,10 @@ export class Channel {
 
   @Column()
   viewers: number;
+
+  @Column({ nullable: true })
+  banphraseType?: BanphraseTypes;
+
+  @Column({ nullable: true })
+  banphraseURL?: string;
 }

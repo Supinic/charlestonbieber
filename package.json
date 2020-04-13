@@ -23,6 +23,7 @@
   "homepage": "https://github.com/caglapickaxe/charlestonbieber#readme",
   "dependencies": {
     "dank-twitch-irc": "^3.0.7",
+    "escape-string-regexp": "^3.0.0",
     "got": "^10.7.0",
     "sqlite3": "^4.1.1",
     "typeorm": "^0.3.0-alpha.24",
