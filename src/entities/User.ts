@@ -15,6 +15,6 @@ export class User {
   @Column()
   platformID: string;
 
-  @Column('simple-array')
+  @Column('simple-array', { nullable: true })
   location: [number, number] | [];
 }
