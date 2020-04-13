@@ -32,7 +32,6 @@ export abstract class Platform {
 
   async handleCommand(type: 'message' | 'pm', { rawMessage, user, channel, timestamp }: RawInput) {
     if (rawMessage.startsWith(PREFIX)) {
-      console.log('loll')
       const [cmd, ...args] = rawMessage.slice(1).split(' ');
       const command = Command.get(cmd);
 
@@ -51,7 +50,7 @@ export abstract class Platform {
       }
 
       if (command && !this.slowMode) {
-        const cooldownString = `${channel.id}-${command.name}`;
+        const cooldownString = [channel.id, command.name || cmd].join();
 
         if (!this.cooldowns.has(cooldownString)) {
           const { reply, cooldown } = await command.finalExecute({
