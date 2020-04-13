@@ -83,7 +83,7 @@ export interface RawInput {
   user: {
     name: string;
     platformID: string;
-  },
+  };
   channel: ChannelLike,
   rawMessage: string;
   timestamp: Date;
