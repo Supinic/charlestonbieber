@@ -3,5 +3,7 @@
   "TWITCH_PASSWORD": "",
   "PREFIX": "",
 
-  "OWM_KEY": ""
+  "OWM_KEY": "",
+  "SUPI_API_KEY": "",
+  "SUPIBOT_ID": ""
 }
