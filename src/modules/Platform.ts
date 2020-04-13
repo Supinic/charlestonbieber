@@ -13,7 +13,7 @@ export abstract class Platform {
   abstract client: any;
 
   abstract async message(channel: ChannelEntity, message: string): Promise<void>;
-  abstract async pm(channel: ChannelEntity, message: string): Promise<void>;
+  abstract async pm(user: UserEntity, message: string): Promise<void>;
 
   static platforms: Platform[];
 
@@ -50,7 +50,7 @@ export abstract class Platform {
       }
 
       if (command && !this.slowMode) {
-        const cooldownString = [channel.id, command.name || cmd].join();
+        const cooldownString = [type === 'pm' ? userObject.id : channel.id, command.name || cmd].join();
 
         if (!this.cooldowns.has(cooldownString)) {
           const { reply, cooldown } = await command.finalExecute({
@@ -65,7 +65,7 @@ export abstract class Platform {
           if (type === 'message') {
             await this.message(channel, reply);
           } else {
-            await this.pm(channel, reply);
+            await this.pm(userObject, reply);
           }
   
           this.slowMode = true;
