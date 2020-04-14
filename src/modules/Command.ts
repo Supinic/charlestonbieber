@@ -49,7 +49,7 @@ export abstract class Command {
   static commands: Command[];
 
   static reload() {
-    const commands: object = require('../commands');
+    const commands: { [key: string]: new () => Command } = require('../commands');
 
     this.commands = Object.values(commands).map(command => new command());
   }
