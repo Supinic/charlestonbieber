@@ -32,10 +32,10 @@ export class PubSub extends Platform {
   constructor() {
     super();
 
-    this.client.on('open', () => {
+    this.client.on('open', async () => {
       console.info('Connected to PubSub. Subscribing to topics.');
 
-      const channels = Channel.channels.filter(i => i.platform === PlatformNames.TWITCH);
+      const channels = await Channel.getJoinable(Platform.get(PlatformNames.TWITCH));
 
       for (const { name, platformID } of channels) {
         this.send('LISTEN', {
@@ -62,7 +62,7 @@ export class PubSub extends Platform {
           if (data) {
             const message: MESSAGE_MESSAGE = JSON.parse(data.message);
             const { topic } = data;
-            const channel = Channel.get(topic.replace(/^(video-playback|community-points-channel-v1)\./, ''));
+            const channel = await Channel.get(topic.replace(/^(video-playback|community-points-channel-v1)\./, ''));
 
             switch (message.type) {
               case 'viewcount':
@@ -71,21 +71,18 @@ export class PubSub extends Platform {
                 channel.viewers = viewers;
                 connection.manager.save(channel);
 
-                await Channel.reload(connection);
                 break;
               
               case 'stream-up':
                 channel.live = true;
 
                 connection.manager.save(channel);
-                await Channel.reload(connection);
                 break;
 
               case 'stream-down':
                 channel.live = false;
                 
                 connection.manager.save(channel);
-                await Channel.reload(connection);
                 break;
 
               case 'reward-redeemed':

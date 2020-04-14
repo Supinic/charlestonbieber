@@ -1,18 +1,25 @@
 import { Channel as ChannelEntity } from '../entities';
 import { Connection } from 'typeorm';
+import { Platform } from './Platform';
 
 export type ChannelLike = string | number| ChannelEntity;
 
 export class Channel {
-  static channels: ChannelEntity[];
+  private static connection: Connection;
   
-  static async reload(connection: Connection) {
-    this.channels = await connection.manager.find(ChannelEntity);
+  static init(connection: Connection) {
+    this.connection = connection;
   }
 
-  static get(identifier: ChannelLike): ChannelEntity {
+  static async get(identifier: ChannelLike): Promise<ChannelEntity> {
     return identifier instanceof ChannelEntity
       ? identifier
-      : this.channels.find(i => i.name === identifier || i.id === identifier || i.platformID === identifier);
+      : (await this.connection.manager.find(ChannelEntity))
+        .find(i => i.name === identifier || i.id === identifier || i.platformID === identifier);
+  }
+
+  static async getJoinable(platform: Platform): Promise<ChannelEntity[]> {
+    return (await this.connection.manager.find(ChannelEntity))
+      .filter(i => i.platform === platform.name);
   }
 }

@@ -4,7 +4,7 @@ import { Connection } from 'typeorm';
 export class StaticCommand {
   static commands: SCEntity[];
 
-  static async reload(connection: Connection) {
+  static async init(connection: Connection) {
     this.commands = await connection.manager.find(SCEntity);
   }
 

@@ -1,6 +1,5 @@
 import { Channel as ChannelEntity, User as UserEntity } from '../entities';
 import { Channel, ChannelLike, User, Command } from '.';
-
 import { PREFIX } from '../config.json';
 import { getConnection } from 'typeorm';
 
@@ -35,9 +34,9 @@ export abstract class Platform {
       const [cmd, ...args] = rawMessage.slice(1).split(' ');
       const command = Command.get(cmd);
 
-      channel = Channel.get(channel);
+      channel = await Channel.get(channel);
 
-      let userObject = User.get(user.platformID);
+      let userObject = await User.get(user.platformID);
 
       if (!userObject) {
         userObject = new UserEntity();
@@ -46,7 +45,7 @@ export abstract class Platform {
         userObject.platform = this.name;
         userObject.location = [];
 
-        getConnection().manager.save(userObject);
+        await getConnection().manager.save(userObject);
       }
 
       if (command && !this.slowMode) {

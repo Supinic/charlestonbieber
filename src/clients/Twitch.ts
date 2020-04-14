@@ -25,9 +25,9 @@ export class Twitch extends Platform {
     this.client.use(new AlternateMessageModifier(this.client));
     this.client.use(new SlowModeRateLimiter(this.client, 20));
 
-    this.client.on('ready', () => {
+    this.client.on('ready', async () => {
       console.info('Connected to Twitch IRC. Joining channels.');
-      this.client.joinAll(Channel.channels.filter(i => i.platform === this.name).map(i => i.name));
+      this.client.joinAll((await Channel.getJoinable(this)).map(i => i.name));
     });
 
     this.client.on('PRIVMSG', async ({ messageText, senderUserID, channelID, serverTimestamp, senderUsername }: PrivmsgMessage) => await this.handleCommand('message', {
