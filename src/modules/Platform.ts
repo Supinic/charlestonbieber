@@ -18,7 +18,7 @@ export abstract class Platform {
   static platforms: Platform[];
 
   static reload() {
-    const platforms: object = require('../clients');
+    const platforms: { [key: string]: new () => Platform } = require('../clients');
 
     this.platforms = Object.values(platforms).map(platform => new platform());
   }
