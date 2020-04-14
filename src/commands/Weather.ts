@@ -1,8 +1,7 @@
-import { Command, Input, Output } from '../modules';
+import { Command, Input, Output, User } from '../modules';
 import got from 'got';
 import { OWM_KEY as appid } from '../config.json';
 import { WeatherData } from './types';
-import { timeDelta } from '../modules/Util';
 
 export class Weather extends Command {
   name = 'weather';
@@ -44,6 +43,17 @@ export class Weather extends Command {
   
         args.splice(i, 1);
       }
+
+      if (token.startsWith('@')) {
+        const user = await User.get(token.slice(1));
+
+        if (user?.location) {
+          searchParams['lat'] = user.location[0];
+          searchParams['lon'] = user.location[1];
+
+          args.splice(i, 1);
+        }
+      }
     }
 
     if ('lat' in searchParams && !('lon' in searchParams)) {
@@ -62,7 +72,10 @@ export class Weather extends Command {
       };
     }
     
-    if (!('lat' in searchParams && 'lon' in searchParams)) {
+    if (!('lat' in searchParams && 'lon' in searchParams) && msg.user.location) {
+        searchParams['lat'] = msg.user.location[0];
+        searchParams['lon'] = msg.user.location[1];
+    } else {
       const location = args.join(' ');
 
       if (!location) {

@@ -1,4 +1,4 @@
-export     interface WeatherData {
+export interface WeatherData {
   coord: {
     /** City geo location, longitude */
     lon: number;
@@ -69,4 +69,37 @@ export     interface WeatherData {
   name: string;
   /** Internal parameter */
   cod: number;
+}
+
+export interface LocationData {
+  authenticationResultCode: string;
+  brandLogoUri: 'http://dev.virtualearth.net/Branding/logo_powered_by.png';
+  copyright: 'Copyright © 2020 Microsoft and its suppliers. All rights reserved. This API cannot be accessed and the content and any results may not be used, reproduced or transmitted in any manner without express written permission from Microsoft Corporation.';
+  resourceSets: {
+    estimatedTotal: string;
+    resources: {
+      __type: 'Location:http://schemas.microsoft.com/search/local/ws/rest/v1';
+      bbox: [number, number, number, number];
+      name: string;
+      point: {
+        type: 'Point';
+        coordinates: [number, number];
+      };
+      address: {
+        adminDistrict: string;
+        countryRegion: string;
+        formattedAddress: string;
+        locality: string;
+      };
+      confidence: string;
+      entityType: string;
+      geocodePoints: {
+        type: 'Point';
+        coordinates: [number, number];
+        calculationMethod: string;
+        usageTypes: string[];
+      }[];
+      matchCodes: string[];
+    }[];
+  }[];
 }
