@@ -2,13 +2,11 @@ import { ChatClient, AlternateMessageModifier, SlowModeRateLimiter, PrivmsgMessa
 import { Channel, Platform, PlatformNames } from '../modules';
 import { Channel as ChannelEntity, User as UserEntity } from '../entities';
 
-import {
-  TWITCH_USERNAME as username,
-  TWITCH_PASSWORD as password,
-} from '../config.json';
+import { TWITCH_USERNAME as username, TWITCH_PASSWORD as password } from '../config.json';
 
 export class Twitch extends Platform {
   name = PlatformNames.TWITCH;
+
   client = new ChatClient({ username, password, rateLimits: 'verifiedBot' });
 
   async message(channel: ChannelEntity, message: string): Promise<void> {

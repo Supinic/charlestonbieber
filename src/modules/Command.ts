@@ -1,7 +1,7 @@
+import escapeStringRegExp from 'escape-string-regexp';
 import { Channel, User } from '../entities';
 import { Platform, BanphraseTypes } from '.';
 import { pajbot } from './Banphrase';
-import escapeStringRegExp from 'escape-string-regexp';
 
 export abstract class Command {
   abstract name: string;
@@ -25,7 +25,7 @@ export abstract class Command {
           case 'regex':
             pattern = banphrase_data.phrase;
             break;
-          
+
           case 'contains':
             pattern = escapeStringRegExp(banphrase_data.phrase);
             break;

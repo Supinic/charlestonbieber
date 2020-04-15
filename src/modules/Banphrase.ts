@@ -1,5 +1,5 @@
-import { Channel } from '../entities';
 import got from 'got';
+import { Channel } from '../entities';
 
 export enum BanphraseTypes {
   PAJBOT = 'Pajbot',

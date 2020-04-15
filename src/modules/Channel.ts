@@ -1,12 +1,12 @@
-import { Channel as ChannelEntity } from '../entities';
 import { Connection } from 'typeorm';
+import { Channel as ChannelEntity } from '../entities';
 import { Platform } from './Platform';
 
 export type ChannelLike = string | number| ChannelEntity;
 
 export class Channel {
   private static connection: Connection;
-  
+
   static init(connection: Connection) {
     this.connection = connection;
   }

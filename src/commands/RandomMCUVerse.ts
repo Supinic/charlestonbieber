@@ -1,5 +1,5 @@
-import { Command, Input, Output, randomItem } from '../modules';
 import { getConnection } from 'typeorm';
+import { Command, Output, randomItem } from '../modules';
 import { MCUVerse } from '../entities';
 
 export class RandomMCUVerse extends Command {
@@ -8,7 +8,7 @@ export class RandomMCUVerse extends Command {
   cooldown = 5000;
   data = { verses: null };
 
-  async execute(msg: Input, ...args: string[]): Promise<Output> {
+  async execute(): Promise<Output> {
     if (!this.data.verses) {
       this.data.verses = await getConnection().manager.find(MCUVerse);
     }

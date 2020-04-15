@@ -1,9 +1,9 @@
 import WebSocket from 'ws';
 import { JsonObject } from 'type-fest';
 import { randomBytes } from 'crypto';
+import { getConnection } from 'typeorm';
 import { Platform, Channel, PlatformNames } from '../modules';
 import { TWITCH_PASSWORD as auth_token } from '../config.json';
-import { getConnection } from 'typeorm';
 
 const connection = getConnection();
 
@@ -27,6 +27,7 @@ interface MESSAGE_MESSAGE {
 export class PubSub extends Platform {
   // @ts-ignore
   name = 'PubSub';
+
   client = new WebSocket('wss://pubsub-edge.twitch.tv');
 
   constructor() {
@@ -43,7 +44,7 @@ export class PubSub extends Platform {
             this.createTopic('video-playback', name),
             this.createTopic('community-points-channel-v1', platformID),
           ],
-          auth_token, 
+          auth_token,
         });
       }
 
@@ -72,7 +73,7 @@ export class PubSub extends Platform {
                 connection.manager.save(channel);
 
                 break;
-              
+
               case 'stream-up':
                 channel.live = true;
 
@@ -81,7 +82,7 @@ export class PubSub extends Platform {
 
               case 'stream-down':
                 channel.live = false;
-                
+
                 connection.manager.save(channel);
                 break;
 
@@ -111,7 +112,7 @@ export class PubSub extends Platform {
     this.client.send(JSON.stringify({
       type,
       nonce: randomBytes(15).toString('hex'),
-      data
+      data,
     }));
   }
 

@@ -1,5 +1,5 @@
-import { Command, Input, Output } from '../modules';
 import got from 'got';
+import { Command, Input, Output } from '../modules';
 
 interface APIResponse {
   title: string;
@@ -30,7 +30,7 @@ export class Lyrics extends Command {
         success: false,
       };
     }
-    
+
     const data: APIResponse = await got({
       url: 'https://some-random-api.ml/lyrics',
       searchParams: { title: lyrics },
@@ -47,4 +47,3 @@ export class Lyrics extends Command {
     return { reply: `I guess that song is ${data.title} by ${data.author}` };
   }
 }
-

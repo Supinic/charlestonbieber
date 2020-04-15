@@ -1,5 +1,5 @@
-import { StaticCommand as SCEntity } from '../entities';
 import { Connection } from 'typeorm';
+import { StaticCommand as SCEntity } from '../entities';
 
 export class StaticCommand {
   static commands: SCEntity[];

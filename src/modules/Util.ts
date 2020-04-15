@@ -22,25 +22,25 @@ export function timeDelta(target: Date, skipAffixes = false): string {
   };
 
   if (delta < timeUnits.s.ms) {
-    string = delta + 'ms';
+    string = `${delta}ms`;
   } else if (delta < timeUnits.m.ms) {
-    string = Math.round(delta / timeUnits.s.ms) + 's';
+    string = `${Math.round(delta / timeUnits.s.ms)}s`;
   } else if (delta < timeUnits.h.ms) {
     const minutes = Math.trunc(delta / timeUnits.m.ms);
     const seconds = Math.trunc((delta / timeUnits.s.ms) % timeUnits.m.s);
-    string = minutes + 'm, ' + seconds + 's';
+    string = `${minutes}m, ${seconds}s`;
   } else if (delta < timeUnits.d.ms) {
     const hours = Math.trunc(delta / timeUnits.h.ms);
     const minutes = Math.trunc(delta / timeUnits.m.ms) % timeUnits.h.m;
-    string = hours + 'h, ' + minutes + 'm';
+    string = `${hours}h, ${minutes}m`;
   } else if (delta < timeUnits.y.ms) {
     const days = Math.trunc(delta / timeUnits.d.ms);
     const hours = Math.trunc(delta / timeUnits.h.ms) % timeUnits.d.h;
-    string = days + 'd, ' + hours + 'h';
+    string = `${days}d, ${hours}h`;
   } else {
     const years = Math.trunc(delta / timeUnits.y.ms);
     const days = Math.trunc(delta / timeUnits.d.ms) % timeUnits.y.d;
-    string = years + 'y, ' + days + 'd';
+    string = `${years}y, ${days}d`;
   }
 
   return skipAffixes

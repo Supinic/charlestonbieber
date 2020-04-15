@@ -1,46 +1,51 @@
-import { Command, Input, Output, User } from '../modules';
 import got from 'got';
+import { Command, Input, Output, User } from '../modules';
 import { OWM_KEY as appid } from '../config.json';
 import { WeatherData } from './types';
 
 export class Weather extends Command {
   name = 'weather';
+
   aliases = [];
+
   cooldown = 10000;
-  data = { symbols: {
-    '01d': '🌞',
-    '01n': '🌚',
-    '02d': '⛅',
-    '02n': '⛅',
-    '03d': '☁',
-    '03n': '☁',
-    '04d': '🌥',
-    '04n': '🌥',
-    '09d': '🌧',
-    '09n': '🌧',
-    '10d': '🌦',
-    '10n': '🌦',
-    '11d': '🌩',
-    '11n': '🌩',
-    '13d': '❄',
-    '13n': '❄',
-    '50d': '🌫',
-    '50n': '🌁'
-  } };
+
+  data = {
+    symbols: {
+      '01d': '🌞',
+      '01n': '🌚',
+      '02d': '⛅',
+      '02n': '⛅',
+      '03d': '☁',
+      '03n': '☁',
+      '04d': '🌥',
+      '04n': '🌥',
+      '09d': '🌧',
+      '09n': '🌧',
+      '10d': '🌦',
+      '10n': '🌦',
+      '11d': '🌩',
+      '11n': '🌩',
+      '13d': '❄',
+      '13n': '❄',
+      '50d': '🌫',
+      '50n': '🌁',
+    },
+  };
 
   async execute(msg: Input, ...args: string[]): Promise<Output> {
-    let searchParams = {
+    const searchParams = {
       units: 'metric',
-      appid
+      appid,
     };
 
     for (let i = args.length - 1; i >= 0; i--) {
       const token = args[i];
-  
+
       if (/^(units|lat|lon)=/.test(token)) {
         const [option, value] = token.split('=');
         searchParams[option] = value.toLowerCase();
-  
+
         args.splice(i, 1);
       }
 
@@ -71,10 +76,10 @@ export class Weather extends Command {
         success: false,
       };
     }
-    
+
     if (!('lat' in searchParams && 'lon' in searchParams) && msg.user.location) {
-        searchParams['lat'] = msg.user.location[0];
-        searchParams['lon'] = msg.user.location[1];
+      searchParams['lat'] = msg.user.location[0];
+      searchParams['lon'] = msg.user.location[1];
     } else {
       const location = args.join(' ');
 
@@ -112,11 +117,11 @@ export class Weather extends Command {
     const res = {
       Temperature: data.main.temp + deg,
       'Feels like': data.main.feels_like + deg,
-      Clouds: data.clouds.all + '%',
+      Clouds: `${data.clouds.all}%`,
       Wind: `${data.wind.speed} ${searchParams.units === 'imperial' ? 'mph' : 'km/h'}`,
-      Humidity: data.main.humidity + '%',
+      Humidity: `${data.main.humidity}%`,
     };
-  
-    return { reply: `${data.name}, ${data.sys.country} ${symbol} ${Object.entries(res).map(i => i.join(': ')).join(' | ')}` };
+
+    return { reply: `${data.name}, ${data.sys.country} ${symbol} ${Object.entries(res).map((i) => i.join(': ')).join(' | ')}` };
   }
 }

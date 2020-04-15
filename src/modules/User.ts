@@ -1,5 +1,5 @@
-import { User as UserEntity } from '../entities';
 import { Connection } from 'typeorm';
+import { User as UserEntity } from '../entities';
 
 export type UserLike = string | number | UserEntity;
 

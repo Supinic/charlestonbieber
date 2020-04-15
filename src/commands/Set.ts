@@ -1,6 +1,6 @@
+import { getConnection } from 'typeorm';
 import { Command, Input, Output } from '../modules';
 import { bingMaps } from '../modules/GotInstances';
-import { getConnection } from 'typeorm';
 import { LocationData } from './types';
 
 const connection = getConnection();

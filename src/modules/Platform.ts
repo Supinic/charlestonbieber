@@ -1,7 +1,7 @@
+import { getConnection } from 'typeorm';
 import { Channel as ChannelEntity, User as UserEntity } from '../entities';
 import { Channel, ChannelLike, User, Command } from '.';
 import { PREFIX } from '../config.json';
-import { getConnection } from 'typeorm';
 
 export enum PlatformNames {
   TWITCH = 'Twitch',
@@ -9,9 +9,11 @@ export enum PlatformNames {
 
 export abstract class Platform {
   abstract name: PlatformNames;
+
   abstract client: any;
 
   abstract async message(channel: ChannelEntity, message: string): Promise<void>;
+
   abstract async pm(user: UserEntity, message: string): Promise<void>;
 
   static platforms: Platform[];
@@ -60,16 +62,16 @@ export abstract class Platform {
             platform: this,
             executedCommand: cmd,
           }, ...args);
-  
+
           if (type === 'message') {
             await this.message(channel, reply);
           } else {
             await this.pm(userObject, reply);
           }
-  
+
           this.slowMode = true;
           this.cooldowns.add(cooldownString);
-  
+
           setTimeout(() => this.slowMode = false, 1000);
           setTimeout(() => this.cooldowns.delete(cooldownString), cooldown || command.cooldown);
         }
