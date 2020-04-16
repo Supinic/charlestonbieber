@@ -4,3 +4,4 @@ export * from './RandomMCUVerse';
 export * from './Static';
 export * from './Lyrics';
 export * from './Set';
+export * from './Suggest';
