@@ -1,2 +1,2 @@
 export * from './Twitch';
-export * from './PubSub';
+export * from './TwitchPubSub';
