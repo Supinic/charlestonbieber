@@ -1,3 +1,5 @@
+// TriCatch
+
 import WebSocket from 'ws';
 import { JsonObject } from 'type-fest';
 import { randomBytes } from 'crypto';
