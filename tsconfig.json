@@ -9,11 +9,11 @@
     "experimentalDecorators": true,
     "moduleResolution": "Node",
     "emitDecoratorMetadata": true,
-    "target": "ESNext",
+    "target": "ESNext"
   },
   "include": ["src"],
   "exclude": [
     "node_modules",
-    "build",
-  ],
+    "build"
+  ]
 }
