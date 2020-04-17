@@ -3,15 +3,40 @@ import { Channel, User } from '../entities';
 import { Platform, BanphraseTypes } from '.';
 import { pajbot } from './Banphrase';
 
+export enum Permissions {
+  OWNER = 1,
+  BROADCASTER = 2,
+  EVERYONE = 0,
+}
+
 export abstract class Command {
   abstract name: string;
-  abstract aliases: string[];
+  abstract aliases: string[] = [];
   abstract cooldown: number;
-  abstract data: object;
+  abstract data: object = null;
+  abstract permission: Permissions = Permissions.EVERYONE;
 
   abstract async execute(msg?: Input, ...args: string[]): Promise<Output>;
 
   async finalExecute(msg: Input, ...args: string[]): Promise<Output> {
+    switch (this.permission) {
+      case Permissions.BROADCASTER:
+        if (msg.user.platformID !== msg.channel.platformID) {
+          return { reply: 'Only the broadcaster can use this command.' };
+        }
+        break;
+
+      case Permissions.OWNER:
+        if (msg.user.id !== 1) {
+          return { reply: 'Only my owner can use this command.' };
+        }
+        break;
+
+      case Permissions.EVERYONE:
+      default:
+        break;
+    }
+
     const result = await this.execute(msg, ...args);
 
     if (msg.channel.banphraseType === BanphraseTypes.PAJBOT) {

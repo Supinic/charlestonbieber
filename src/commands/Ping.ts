@@ -1,10 +1,11 @@
-import { Command, Input, Output, timeDelta, Platform, PlatformNames } from '../modules';
+import { Command, Input, Output, timeDelta, Platform, PlatformNames, Permissions } from '../modules';
 
 export class Ping extends Command {
   name = 'ping';
   aliases = [];
   cooldown = 5000;
   data = null;
+  permission = Permissions.EVERYONE;
 
   async execute({ platform }: Input): Promise<Output> {
     let latency: number;

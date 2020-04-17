@@ -1,5 +1,5 @@
 import got from 'got';
-import { Command, Input, Output } from '../modules';
+import { Command, Input, Output, Permissions } from '../modules';
 
 interface APIResponse {
   title: string;
@@ -19,8 +19,9 @@ export class Lyrics extends Command {
   aliases = ['shazam'];
   cooldown = 10000;
   data = null;
+  permission = Permissions.EVERYONE;
 
-  async execute(msg: Input, ...args: string[]): Promise<Output> {
+  async execute(_msg: Input, ...args: string[]): Promise<Output> {
     const lyrics = args.join(' ');
 
     if (!lyrics) {

@@ -1,15 +1,12 @@
 import got from 'got';
-import { Command, Input, Output, User } from '../modules';
+import { Command, Input, Output, User, Permissions } from '../modules';
 import { OWM_KEY as appid } from '../config.json';
 import { WeatherData } from './types';
 
 export class Weather extends Command {
   name = 'weather';
-
   aliases = [];
-
   cooldown = 10000;
-
   data = {
     symbols: {
       '01d': '🌞',
@@ -32,6 +29,7 @@ export class Weather extends Command {
       '50n': '🌁',
     },
   };
+  permission = Permissions.EVERYONE;
 
   async execute(msg: Input, ...args: string[]): Promise<Output> {
     const searchParams = {
@@ -81,9 +79,7 @@ export class Weather extends Command {
       searchParams['lat'] = msg.user.location[0];
       searchParams['lon'] = msg.user.location[1];
     } else {
-      const location = args.join(' ');
-
-      if (!location) {
+      if (!args.length) {
         return {
           reply: 'A location must be provided',
           cooldown: 2500,
@@ -91,7 +87,7 @@ export class Weather extends Command {
         };
       }
 
-      searchParams['q'] = location;
+      searchParams['q'] = args.join(' ');
     }
 
     if (!['imperial', 'metric', 'default'].includes(searchParams.units)) {

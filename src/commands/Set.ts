@@ -1,5 +1,5 @@
 import { getConnection } from 'typeorm';
-import { Command, Input, Output } from '../modules';
+import { Command, Input, Output, Permissions } from '../modules';
 import { bingMaps } from '../modules/GotInstances';
 import { LocationData } from './types';
 
@@ -10,6 +10,7 @@ export class Set extends Command {
   aliases = [];
   cooldown = 10000;
   data = null;
+  permission = Permissions.EVERYONE;
 
   async execute(msg: Input, variable: 'location', ...args: string[]): Promise<Output> {
     if (!variable) {

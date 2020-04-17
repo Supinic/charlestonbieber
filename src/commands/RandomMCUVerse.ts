@@ -1,5 +1,5 @@
 import { getConnection } from 'typeorm';
-import { Command, Output, randomItem } from '../modules';
+import { Command, Output, randomItem, Permissions } from '../modules';
 import { MCUVerse } from '../entities';
 
 export class RandomMCUVerse extends Command {
@@ -7,6 +7,7 @@ export class RandomMCUVerse extends Command {
   aliases = ['rmcuv', 'randommarvelcinematicuniverseverse'];
   cooldown = 5000;
   data = { verses: null };
+  permission = Permissions.EVERYONE;
 
   async execute(): Promise<Output> {
     if (!this.data.verses) {
