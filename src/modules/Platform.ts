@@ -33,7 +33,10 @@ export abstract class Platform {
 
   async handleCommand(type: 'message' | 'pm', { rawMessage, user, channel, timestamp }: RawInput) {
     if (rawMessage.startsWith(PREFIX)) {
-      const [cmd, ...args] = rawMessage.slice(1).split(' ');
+      const [cmd, ...args] = rawMessage
+        .replace(/[\u034f\u2800\u{E0000}\u180e\ufeff\u2000-\u200d\u206D]/gu, '')
+        .slice(1)
+        .split(' ');
       const command = Command.get(cmd);
 
       channel = await Channel.get(channel);
