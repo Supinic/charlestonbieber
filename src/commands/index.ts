@@ -5,3 +5,4 @@ export * from './Static';
 export * from './Lyrics';
 export * from './Set';
 export * from './Suggest';
+export * from './Echo';
