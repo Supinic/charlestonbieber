@@ -17,6 +17,8 @@ interface APIResponse {
 export class Lyrics extends Command {
   name = 'lyrics';
   aliases = ['shazam'];
+  description = 'Guesses a song by its lyrics';
+  syntax = ['lyrics'];
   cooldown = 10000;
   data = null;
   permission = Permissions.EVERYONE;

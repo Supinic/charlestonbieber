@@ -5,6 +5,8 @@ import { Suggestion } from '../entities';
 export class Suggest extends Command {
   name = 'suggest';
   aliases = [];
+  syntax = ['suggestion'];
+  description = 'Suggest something about the bot';
   cooldown = 10000;
   data = null;
   permission = Permissions.EVERYONE;

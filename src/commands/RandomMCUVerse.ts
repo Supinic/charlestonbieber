@@ -5,6 +5,8 @@ import { MCUVerse } from '../entities';
 export class RandomMCUVerse extends Command {
   name = 'randommcuverse';
   aliases = ['rmcuv', 'randommarvelcinematicuniverseverse'];
+  description = 'Returns a random quote from MCU as a Bible verse';
+  syntax = [];
   cooldown = 5000;
   data = { verses: null };
   permission = Permissions.EVERYONE;

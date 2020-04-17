@@ -15,6 +15,8 @@ export abstract class Command {
   abstract cooldown: number;
   abstract data: object = null;
   abstract permission: Permissions = Permissions.EVERYONE;
+  abstract description: string;
+  abstract syntax: string[];
 
   abstract async execute(msg?: Input, ...args: string[]): Promise<Output>;
 
@@ -67,6 +69,8 @@ export abstract class Command {
     if (!result.noUsername) {
       result.reply = `${msg.user.name}, ${result.reply}`;
     }
+
+    result.reply = result.reply.replace(/\s+/g, ' ');
 
     return result;
   }

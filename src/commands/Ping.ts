@@ -3,6 +3,8 @@ import { Command, Input, Output, timeDelta, Platform, PlatformNames, Permissions
 export class Ping extends Command {
   name = 'ping';
   aliases = [];
+  description = 'See if the bot is alive';
+  syntax = [];
   cooldown = 5000;
   data = null;
   permission = Permissions.EVERYONE;

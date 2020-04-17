@@ -3,6 +3,8 @@ import { Command, Input, Output, StaticCommand, Permissions } from '../modules';
 export class Static extends Command {
   name = null;
   aliases = StaticCommand.commands.map((i) => i.name);
+  syntax = [];
+  description = '';
   cooldown = 0;
   data = { commands: StaticCommand.commands };
   permission = Permissions.EVERYONE;

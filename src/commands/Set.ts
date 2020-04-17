@@ -8,6 +8,8 @@ const connection = getConnection();
 export class Set extends Command {
   name = 'set';
   aliases = [];
+  syntax = ['variable', 'value'];
+  description = 'Allows users to customize their variables within the bot';
   cooldown = 10000;
   data = null;
   permission = Permissions.EVERYONE;
