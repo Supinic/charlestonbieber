@@ -29,13 +29,12 @@ interface MESSAGE_MESSAGE {
 export class PubSub extends Platform {
   // @ts-ignore
   name = 'PubSub';
+  client: WebSocket;
 
-  client = new WebSocket('wss://pubsub-edge.twitch.tv');
+  connect() {
+    this.client = new WebSocket('wss://pubsub-edge.twitch.tv');
 
-  constructor() {
-    super();
-
-    this.client.on('open', async () => {
+    this.client.onopen = async () => {
       console.info('Connected to PubSub. Subscribing to topics.');
 
       const channels = await Channel.getJoinable(Platform.get(PlatformNames.TWITCH));
@@ -51,10 +50,10 @@ export class PubSub extends Platform {
       }
 
       setInterval(() => this.send('PING'), 3e4);
-    });
+    };
 
-    this.client.on('message', async (stringifiedData: string) => {
-      const { data, type }: PubSubMessage<MESSAGE> = JSON.parse(stringifiedData);
+    this.client.onmessage = async ({ data: stringifiedData }) => {
+      const { data, type }: PubSubMessage<MESSAGE> = JSON.parse(stringifiedData as string);
 
       switch (type) {
         case 'PONG':
@@ -78,6 +77,7 @@ export class PubSub extends Platform {
 
               case 'stream-up':
                 channel.live = true;
+                channel.viewers = 0;
 
                 connection.manager.save(channel);
                 break;
@@ -103,7 +103,18 @@ export class PubSub extends Platform {
           this.client.close();
           break;
       }
-    });
+    };
+
+    this.client.onclose = () => {
+      this.client = null;
+      this.connect();
+    };
+  }
+
+  constructor() {
+    super();
+
+    this.connect();
   }
 
   private createTopic(topic: string, channel: string): string {
