@@ -68,22 +68,22 @@ export class PubSub extends Platform {
 
             switch (message.type) {
               case 'viewcount':
-                const { viewers } = message;
+                if (channel.live) {
+                  channel.viewers = message.viewers;
 
-                channel.viewers = viewers;
-                connection.manager.save(channel);
-
+                  connection.manager.save(channel);
+                }
                 break;
 
               case 'stream-up':
                 channel.live = true;
-                channel.viewers = 0;
 
                 connection.manager.save(channel);
                 break;
 
               case 'stream-down':
                 channel.live = false;
+                channel.viewers = 0;
 
                 connection.manager.save(channel);
                 break;
