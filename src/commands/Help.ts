@@ -33,6 +33,6 @@ export class Help extends Command {
       ? `(${cmd.aliases.join(', ')})`
       : '';
 
-    return { reply: `${PREFIX}${cmd.name} ${aliases} ${cmd.syntax.map(i => `<${i}>`)} | ${cmd.description}` };
+    return { reply: `${PREFIX}${cmd.name} ${aliases} ${cmd.syntax.map(i => `<${i}>`)} | ${cmd.description} | Cooldown: ${cmd.cooldown / 1000} seconds` };
   }
 }
