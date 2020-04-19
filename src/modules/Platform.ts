@@ -35,7 +35,7 @@ export abstract class Platform {
     if (rawMessage.startsWith(PREFIX)) {
       const [cmd, ...args] = rawMessage
         .replace(/[\u034f\u2800\u{E0000}\u180e\ufeff\u2000-\u200d\u206D]/gu, '')
-        .slice(1)
+        .slice(PREFIX.length)
         .split(' ');
       const command = Command.get(cmd);
 
