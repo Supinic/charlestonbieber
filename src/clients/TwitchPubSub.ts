@@ -31,6 +31,8 @@ export class PubSub extends Platform {
   name = 'PubSub';
   client: WebSocket;
 
+  ping: NodeJS.Timeout;
+
   connect() {
     this.client = new WebSocket('wss://pubsub-edge.twitch.tv');
 
@@ -49,7 +51,7 @@ export class PubSub extends Platform {
         });
       }
 
-      setInterval(() => this.send('PING'), 3e4);
+      this.ping = setInterval(() => this.send('PING'), 3e5);
     };
 
     this.client.onmessage = async ({ data: stringifiedData }) => {
@@ -106,6 +108,8 @@ export class PubSub extends Platform {
     };
 
     this.client.onclose = () => {
+      clearInterval(this.ping);
+
       this.client = null;
       this.connect();
     };
