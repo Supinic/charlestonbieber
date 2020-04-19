@@ -124,8 +124,8 @@ export class PubSub extends Platform {
   send(type: string, data?: JsonObject): void {
     this.client.send(JSON.stringify({
       type,
-      nonce: randomBytes(15).toString('hex'),
       data,
+      nonce: randomBytes(15).toString('hex'),
     }));
   }
 
