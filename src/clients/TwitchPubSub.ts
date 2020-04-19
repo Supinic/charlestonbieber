@@ -3,11 +3,9 @@
 import WebSocket from 'ws';
 import { JsonObject } from 'type-fest';
 import { randomBytes } from 'crypto';
-import { getConnection } from 'typeorm';
+import { getManager } from 'typeorm';
 import { Platform, Channel, PlatformNames } from '../modules';
 import { TWITCH_PASSWORD as auth_token } from '../config.json';
-
-const connection = getConnection();
 
 interface PubSubMessage<T = JsonObject> {
   type: string;
@@ -31,6 +29,7 @@ export class PubSub extends Platform {
   name = 'PubSub';
   client: WebSocket;
 
+  manager = getManager();
   ping: NodeJS.Timeout;
 
   connect() {
@@ -73,21 +72,21 @@ export class PubSub extends Platform {
                 if (channel.live) {
                   channel.viewers = message.viewers;
 
-                  connection.manager.save(channel);
+                  await this.manager.save(channel);
                 }
                 break;
 
               case 'stream-up':
                 channel.live = true;
 
-                connection.manager.save(channel);
+                await this.manager.save(channel);
                 break;
 
               case 'stream-down':
                 channel.live = false;
                 channel.viewers = 0;
 
-                connection.manager.save(channel);
+                await this.manager.save(channel);
                 break;
 
               case 'reward-redeemed':
