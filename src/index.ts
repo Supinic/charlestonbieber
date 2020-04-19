@@ -2,11 +2,11 @@ import { createConnection } from 'typeorm';
 import { Platform, User, Channel, Command, StaticCommand } from './modules';
 import { supi } from './modules/GotInstances';
 
-createConnection().then(async connection => {
-  Channel.init(connection);
-  User.init(connection);
+createConnection().then(async ({ manager }) => {
+  Channel.init(manager);
+  User.init(manager);
 
-  await StaticCommand.init(connection);
+  await StaticCommand.init(manager);
 
   Command.reload();
   Platform.reload();
