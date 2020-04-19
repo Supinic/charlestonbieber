@@ -1,4 +1,4 @@
-import { getConnection } from 'typeorm';
+import { getManager } from 'typeorm';
 import { Channel as ChannelEntity, User as UserEntity } from '../entities';
 import { Channel, ChannelLike, User, Command } from '.';
 import { PREFIX } from '../config.json';
@@ -9,11 +9,9 @@ export enum PlatformNames {
 
 export abstract class Platform {
   abstract name: PlatformNames;
-
   abstract client: any;
 
   abstract async message(channel: ChannelEntity, message: string): Promise<void>;
-
   abstract async pm(user: UserEntity, message: string): Promise<void>;
 
   static platforms: Platform[];
@@ -50,7 +48,7 @@ export abstract class Platform {
         userObject.platform = this.name;
         userObject.location = [];
 
-        await getConnection().manager.save(userObject);
+        await getManager().save(userObject);
       }
 
       if (command && !this.slowMode) {

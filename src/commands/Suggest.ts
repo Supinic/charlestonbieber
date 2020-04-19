@@ -1,4 +1,4 @@
-import { getConnection } from 'typeorm';
+import { getManager } from 'typeorm';
 import { Command, Input, Output, Permissions } from '../modules';
 import { Suggestion } from '../entities';
 
@@ -27,7 +27,7 @@ export class Suggest extends Command {
     suggestionObject.user = msg.user;
     suggestionObject.suggestion = suggestion;
 
-    await getConnection().manager.save(suggestionObject);
+    await getManager().save(suggestionObject);
 
     return { reply: `Suggestion saved and eShrug ID: ${suggestionObject.id}` };
   }

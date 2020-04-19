@@ -1,9 +1,7 @@
-import { getConnection } from 'typeorm';
+import { getManager } from 'typeorm';
 import { Command, Input, Output, Permissions } from '../modules';
 import { bingMaps } from '../modules/GotInstances';
 import { LocationData } from './types';
-
-const connection = getConnection();
 
 export class Set extends Command {
   name = 'set';
@@ -51,7 +49,7 @@ export class Set extends Command {
         }
 
         msg.user.location = location.point.coordinates;
-        await connection.manager.save(msg.user);
+        await getManager().save(msg.user);
 
         return { reply: 'Location has been successfully set' };
     }
