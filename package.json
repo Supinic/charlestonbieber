@@ -4,7 +4,7 @@
   "description": "Dank Twitch bot.",
   "main": "build/index.js",
   "scripts": {
-    "start": "node --harmony-optional-chaining -r ts-node/register src/index.ts"
+    "start": "node -r ts-node/register src/index.ts"
   },
   "repository": {
     "type": "git",
@@ -37,5 +37,8 @@
     "ts-node": "^8.8.2",
     "type-fest": "^0.13.1",
     "typescript": "^3.8.3"
+  },
+  "engines": {
+    "node": ">=14.0.0"
   }
 }
