@@ -6,5 +6,6 @@
   "OWM_KEY": "",
   "SUPI_API_KEY": "",
   "SUPIBOT_ID": "",
-  "BING_MAPS_KEY": ""
+  "BING_MAPS_KEY": "",
+  "WOLFRAM_APPID": ""
 }
