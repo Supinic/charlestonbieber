@@ -20,7 +20,7 @@ export abstract class Command {
 
   abstract async execute(msg?: Input, ...args: string[]): Promise<Output>;
 
-  async finalExecute(msg: Input, ...args: string[]): Promise<Output> {
+  checkPermission(msg: Input): Output {
     switch (this.permission) {
       case Permissions.BROADCASTER:
         if (msg.user.platformID !== msg.channel.platformID) {
@@ -37,6 +37,14 @@ export abstract class Command {
       case Permissions.EVERYONE:
       default:
         break;
+    }
+  }
+
+  async finalExecute(msg: Input, ...args: string[]): Promise<Output> {
+    const notPermitted = this.checkPermission(msg);
+
+    if (notPermitted) {
+      return notPermitted;
     }
 
     const result = await this.execute(msg, ...args);

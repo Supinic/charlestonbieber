@@ -1,6 +1,6 @@
 import { getManager } from 'typeorm';
 import { Channel as ChannelEntity, User as UserEntity } from '../entities';
-import { Channel, ChannelLike, User, Command } from '.';
+import { Channel, ChannelLike, User, Command, CooldownManager, Cooldown } from '.';
 import { PREFIX } from '../config.json';
 
 export enum PlatformNames {
@@ -26,7 +26,6 @@ export abstract class Platform {
     return this.platforms.find(i => i.name === name);
   }
 
-  cooldowns = new Set<string>();
   slowMode = false;
 
   async handleCommand(type: 'message' | 'pm', { rawMessage, user, channel, timestamp }: RawInput) {
@@ -52,9 +51,12 @@ export abstract class Platform {
       }
 
       if (command && !this.slowMode) {
-        const cooldownString = [type === 'pm' ? userObject.id : channel.id, command.name || cmd].join();
+        const cooldownObject: Cooldown = {
+          executedBy: type === 'pm' ? userObject : channel,
+          command,
+        };
 
-        if (!this.cooldowns.has(cooldownString)) {
+        if (!CooldownManager.has(cooldownObject)) {
           const { reply, cooldown } = await command.finalExecute({
             user: userObject,
             channel,
@@ -64,6 +66,10 @@ export abstract class Platform {
             executedCommand: cmd,
           }, ...args);
 
+          if (cooldown) {
+            cooldownObject.cooldown = cooldown;
+          }
+
           if (type === 'message') {
             await this.message(channel, reply);
           } else {
@@ -71,10 +77,9 @@ export abstract class Platform {
           }
 
           this.slowMode = true;
-          this.cooldowns.add(cooldownString);
+          CooldownManager.add(cooldownObject);
 
           setTimeout(() => this.slowMode = false, 1000);
-          setTimeout(() => this.cooldowns.delete(cooldownString), cooldown || command.cooldown);
         }
       }
     }
