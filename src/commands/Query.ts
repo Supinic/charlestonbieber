@@ -12,7 +12,10 @@ export class Query extends Command {
   permission = Permissions.EVERYONE;
 
   async execute(_msg: Input, ...args: string[]): Promise<Output> {
-    let searchParams = { appid };
+    let searchParams = {
+      units: 'metric',
+      appid,
+    };
 
     for (let i = args.length - 1; i >= 0; i--) {
       const token = args[i];
