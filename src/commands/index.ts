@@ -9,3 +9,4 @@ export * from './Echo';
 export * from './Help';
 export * from './Debug';
 export * from './Query';
+export * from './Pipe';
