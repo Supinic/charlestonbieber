@@ -1,6 +1,6 @@
 import { getManager } from 'typeorm';
 import { Channel as ChannelEntity, User as UserEntity } from '../entities';
-import { Channel, ChannelLike, User, Command, CooldownManager, Cooldown } from '.';
+import { Channel, ChannelLike, User, Command, CooldownManager, Cooldown, MessageType } from '.';
 import { PREFIX } from '../config.json';
 
 export enum PlatformNames {
@@ -28,7 +28,7 @@ export abstract class Platform {
 
   slowMode = false;
 
-  async handleCommand(type: 'message' | 'pm', { rawMessage, user, channel, timestamp }: RawInput) {
+  async handleCommand({ rawMessage, user, channel, timestamp, type }: RawInput) {
     if (rawMessage.startsWith(PREFIX)) {
       const [cmd, ...args] = rawMessage
         .replace(/[\u034f\u2800\u{E0000}\u180e\ufeff\u2000-\u200d\u206D]/gu, '')
@@ -52,7 +52,7 @@ export abstract class Platform {
 
       if (command && !this.slowMode) {
         const cooldownObject: Cooldown = {
-          executedBy: type === 'pm' ? userObject : channel,
+          executedBy: type === 'message' ? channel : userObject,
           command,
         };
 
@@ -62,6 +62,7 @@ export abstract class Platform {
             channel,
             timestamp,
             rawMessage,
+            type,
             platform: this,
             executedCommand: cmd,
           }, ...args);
@@ -94,4 +95,5 @@ export interface RawInput {
   channel: ChannelLike,
   rawMessage: string;
   timestamp: Date;
+  type: MessageType;
 }

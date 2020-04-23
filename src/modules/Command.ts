@@ -1,4 +1,4 @@
-import escapeStringRegExp from 'escape-string-regexp';
+import escapeStringRegexp from 'escape-string-regexp';
 import { Channel, User } from '../entities';
 import { Platform, BanphraseTypes } from '.';
 import { pajbot } from './Banphrase';
@@ -49,7 +49,7 @@ export abstract class Command {
 
     const result = await this.execute(msg, ...args);
 
-    if (msg.channel.banphraseType === BanphraseTypes.PAJBOT) {
+    if (msg.type === 'message' && msg.channel.banphraseType === BanphraseTypes.PAJBOT) {
       const { banned, banphrase_data } = await pajbot(msg.channel, result.reply);
 
       if (banned) {
@@ -62,7 +62,7 @@ export abstract class Command {
             break;
 
           case 'contains':
-            pattern = escapeStringRegExp(banphrase_data.phrase);
+            pattern = escapeStringRegexp(banphrase_data.phrase);
             break;
         }
 
@@ -96,6 +96,8 @@ export abstract class Command {
   }
 }
 
+export type MessageType = 'message' | 'pm';
+
 export interface Input {
   channel: Channel;
   user: User;
@@ -103,6 +105,7 @@ export interface Input {
   rawMessage: string;
   executedCommand: string;
   timestamp: Date;
+  type: MessageType;
 }
 
 export interface Output {

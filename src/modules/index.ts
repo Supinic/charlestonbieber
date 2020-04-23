@@ -5,3 +5,4 @@ export * from './User';
 export * from './Util';
 export * from './StaticCommand';
 export * from './Banphrase';
+export * from './CooldownManager';
