@@ -77,19 +77,17 @@ export class Weather extends Command {
       };
     }
 
-    if (!('lat' in searchParams && 'lon' in searchParams) && msg.user.location) {
+    if (args.length) {
+      searchParams['q'] = args.join(' ');
+    } else if (!('lat' in searchParams && 'lon' in searchParams) && msg.user.location) {
       searchParams['lat'] = msg.user.location[0];
       searchParams['lon'] = msg.user.location[1];
     } else {
-      if (!args.length) {
-        return {
-          reply: 'A location must be provided',
-          cooldown: 2500,
-          success: false,
-        };
-      }
-
-      searchParams['q'] = args.join(' ');
+      return {
+        reply: 'A location must be provided',
+        cooldown: 2500,
+        success: false,
+      };
     }
 
     if (!['imperial', 'metric', 'default'].includes(searchParams.units)) {
@@ -102,10 +100,11 @@ export class Weather extends Command {
 
     const data: WeatherData = await got({
       url: 'https://api.openweathermap.org/data/2.5/weather',
+      throwHttpErrors: false,
       searchParams,
     }).json();
 
-    if (data.cod === 404) {
+    if (data.cod === '404') {
       return { reply: 'eShrug', success: false };
     }
 

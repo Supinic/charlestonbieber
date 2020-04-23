@@ -68,7 +68,7 @@ export interface WeatherData {
   /** City name */
   name: string;
   /** Internal parameter */
-  cod: number;
+  cod: string;
 }
 
 export interface LocationData {
