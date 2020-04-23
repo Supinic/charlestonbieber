@@ -24,6 +24,7 @@ export class Query extends Command {
 
     const answer = await got({
       url: 'https://api.wolframalpha.com/v1/result',
+      throwHttpErrors: false,
       searchParams: {
         i: problem,
         appid,
