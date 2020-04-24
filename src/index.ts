@@ -1,8 +1,9 @@
 import { createConnection } from 'typeorm';
 import { Platform, User, Channel, Command, StaticCommand } from './modules';
 import { supi } from './modules/GotInstances';
+import ormConfig from './ormConfig';
 
-createConnection().then(async ({ manager }) => {
+createConnection(ormConfig).then(async ({ manager }) => {
   Channel.init(manager);
   User.init(manager);
 
