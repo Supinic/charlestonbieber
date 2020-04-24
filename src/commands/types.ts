@@ -1,4 +1,4 @@
-export interface WeatherData {
+export type WeatherData = {
   coord: {
     /** City geo location, longitude */
     lon: number;
@@ -71,7 +71,7 @@ export interface WeatherData {
   cod: string;
 }
 
-export interface LocationData {
+export type LocationData = {
   authenticationResultCode: string;
   brandLogoUri: 'http://dev.virtualearth.net/Branding/logo_powered_by.png';
   copyright: 'Copyright © 2020 Microsoft and its suppliers. All rights reserved. This API cannot be accessed and the content and any results may not be used, reproduced or transmitted in any manner without express written permission from Microsoft Corporation.';
