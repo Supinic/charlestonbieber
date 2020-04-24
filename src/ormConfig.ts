@@ -10,4 +10,3 @@ export default {
   entities: Object.values(entities),
   database,
 } as ConnectionOptions;
-
