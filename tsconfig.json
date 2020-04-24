@@ -9,6 +9,7 @@
     "moduleResolution": "Node",
     "emitDecoratorMetadata": true,
     "target": "ES2015",
+    "sourceMap": true,
   },
   "include": ["src"],
   "exclude": [
