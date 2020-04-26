@@ -1,5 +1,5 @@
 import got from 'got';
-import { Command, Input, Output, User, Permissions } from '../modules';
+import { Command, Input, Output, User, Permissions, getOption } from '../modules';
 import { OWM_KEY as appid } from '../config.json';
 import { WeatherData } from './types';
 
@@ -35,64 +35,71 @@ export class Weather extends Command {
 
   async execute(msg: Input, ...args: string[]): Promise<Output> {
     const searchParams = {
-      units: 'metric',
+      units: getOption('units', args, true) || 'metric',
       appid,
     };
 
-    for (let i = args.length - 1; i >= 0; i--) {
-      const token = args[i];
+    if (!['imperial', 'metric', 'default'].includes(searchParams.units)) {
+      return {
+        reply: '"units" must be "imperial", "metric" (default), or "default" (Kelvin)',
+        cooldown: 2500,
+        success: false,
+      };
+    }
 
-      if (/^(units|lat|lon)=/.test(token)) {
-        const [option, value] = token.split('=');
-        searchParams[option] = value.toLowerCase();
+    {
+      const lat = getOption('lat', args, true);
+      const lon = getOption('lon', args, true);
 
-        args.splice(i, 1);
+      if (lat && !lon) {
+        return {
+          reply: 'A longtitude must be provided',
+          cooldown: 2500,
+          success: false,
+        };
       }
+
+      if (lon && !lat) {
+        return {
+          reply: 'A latitude must be provided',
+          cooldown: 2500,
+          success: false,
+        };
+      }
+
+      if (lat && lon) {
+        searchParams['lat'] = lat;
+        searchParams['lon'] = lon;
+      }
+    }
+
+    for (let i = 0; i < args.length; i++) {
+      const token = args[i];
 
       if (token.startsWith('@')) {
         const user = await User.get(token.slice(1));
 
         if (user?.location) {
-          searchParams['lat'] = user.location[0];
-          searchParams['lon'] = user.location[1];
+          const [lat, lon] = user.location;
+
+          searchParams['lat'] = lat;
+          searchParams['lon'] = lon;
 
           args.splice(i, 1);
         }
       }
     }
 
-    if ('lat' in searchParams && !('lon' in searchParams)) {
-      return {
-        reply: 'A longtitude must be provided',
-        cooldown: 2500,
-        success: false,
-      };
-    }
-
-    if ('lon' in searchParams && !('lat' in searchParams)) {
-      return {
-        reply: 'A latitude must be provided',
-        cooldown: 2500,
-        success: false,
-      };
-    }
-
     if (args.length) {
       searchParams['q'] = args.join(' ');
     } else if (!('lat' in searchParams && 'lon' in searchParams) && msg.user.location) {
-      searchParams['lat'] = msg.user.location[0];
-      searchParams['lon'] = msg.user.location[1];
-    } else {
+      const [lat, lon] = msg.user.location;
+
+      searchParams['lat'] = lat
+      searchParams['lon'] = lon;
+    } else if (!('lat' in searchParams && 'lon' in searchParams)) {
       return {
         reply: 'A location must be provided',
-        cooldown: 2500,
-        success: false,
-      };
-    }
-
-    if (!['imperial', 'metric', 'default'].includes(searchParams.units)) {
-      return {
-        reply: '"units" must be "imperial", "metric" (default), or "default" (Kelvin)',
         cooldown: 2500,
         success: false,
       };
@@ -119,6 +126,11 @@ export class Weather extends Command {
       Humidity: `${data.main.humidity}%`,
     };
 
-    return { reply: `${data.name}, ${data.sys.country} ${symbol} ${Object.entries(res).map((i) => i.join(': ')).join(' | ')}` };
+    return {
+      reply: `
+        ${data.name}, ${data.sys.country || '🌐'} ${symbol}
+        ${Object.entries(res).map((i) => i.join(': ')).join(' | ')}
+      `,
+     };
   }
 }

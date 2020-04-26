@@ -51,3 +51,19 @@ export function timeDelta(target: Date, skipAffixes = false): string {
 export function randomItem<T>(array: T[]): T {
   return array[Math.floor(Math.random() * array.length)];
 }
+
+export function getOption(option: string, args: string[], splice: boolean = false): string | undefined {
+  for (let i = 0; i < args.length; i++) {
+    const token = args[i];
+
+    if (token.startsWith(`${option}=`)) {
+      const [, value] = token.split('=');
+
+      if (splice) {
+        args.splice(i, 1);
+      }
+
+      return value;
+    }
+  }
+}

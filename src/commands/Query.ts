@@ -1,5 +1,5 @@
 import got from 'got';
-import { Command, Input, Output, Permissions } from '../modules';
+import { Command, Input, Output, Permissions, getOption } from '../modules';
 import { WOLFRAM_APPID as appid } from '../config.json';
 
 export class Query extends Command {
@@ -12,23 +12,12 @@ export class Query extends Command {
   permission = Permissions.EVERYONE;
 
   async execute(_msg: Input, ...args: string[]): Promise<Output> {
-    let searchParams = {
-      units: 'metric',
+    const searchParams = {
+      units: getOption('units', args, true) || 'metric',
       appid,
     };
 
-    for (let i = args.length - 1; i >= 0; i--) {
-      const token = args[i];
-
-      if (token.startsWith('units=')) {
-        const [option, value] = token.split('=');
-        searchParams[option] = value;
-
-        args.splice(i, 1);
-      }
-    }
-
-    if (!['metric', 'imperial'].includes(searchParams['units'])) {
+    if (!['metric', 'imperial'].includes(searchParams.units)) {
       return {
         reply: '"units" must be "metric" or "imperial"',
         success: false,
