@@ -3,14 +3,23 @@ import { PREFIX } from '../config.json';
 
 export class Help extends Command {
   name = 'help';
-  aliases = [];
+  aliases = ['commands'];
   description = 'Get help about a command';
   syntax = ['command'];
   cooldown = 5000;
   permission = Permissions.EVERYONE;
   data = null;
 
-  async execute(_msg: Input, command: string): Promise<Output> {
+  async execute({ executedCommand }: Input, command: string): Promise<Output> {
+    if (executedCommand === 'commands') {
+      const commands = Command.commands
+        .map(i => i.name)
+        .filter(i => i !== null)
+        .join(', ');
+
+      return { reply: `Available commands: ${commands}` };
+    }
+
     if (!command) {
       return {
         reply: 'No command specified',
