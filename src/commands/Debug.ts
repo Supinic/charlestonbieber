@@ -15,17 +15,11 @@ export class Debug extends Command {
 
   async execute(msg: Input, ...args: string[]): Promise<Output> {
     try {
-      const script = new Script(args.join(' '));
+      const script = new Script(`(async () => { ${args.join(' ')} })()`);
       const context = createContext({ msg, modules, entities });
       let reply = await script.runInNewContext(context, { timeout: 5000 });
 
-      try {
-        reply = JSON.stringify(reply);
-      } catch {
-        reply = String(reply);
-      }
-
-      return { reply };
+      return { reply: String(reply) };
     } catch (e) {
       return { reply: String(e) };
     }
