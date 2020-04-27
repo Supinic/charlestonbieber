@@ -1,6 +1,6 @@
 import got from 'got';
 import escapeStringRegexp from 'escape-string-regexp';
-import { getManager } from 'typeorm';
+import { getRepository } from 'typeorm';
 import { Channel } from '../entities';
 import { Banphrase, BanphraseTypes as EBanphraseTypes } from '../entities';
 
@@ -65,8 +65,8 @@ export async function cleanBanphrases(
   channel: Channel,
   external: boolean = false,
 ): Promise<string> {
-  const banphrases = (await getManager().find(Banphrase))
-    .filter(i => !i.channel || i.channel === channel);
+  const banphrases = (await getRepository(Banphrase).find({ relations: ['channel'] }))
+    .filter(i => i.channel === null || i.channel.id === channel.id);
 
   for (const { type, caseSensitive, banphrase, replaceWith } of banphrases) {
     let pattern: string;
