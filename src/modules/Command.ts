@@ -1,7 +1,7 @@
 import escapeStringRegexp from 'escape-string-regexp';
 import { Channel, User } from '../entities';
 import { Platform, BanphraseTypes } from '.';
-import { Pajbot } from './Banphrase';
+import { Pajbot, cleanBanphrases } from './Banphrase';
 
 export enum Permissions {
   OWNER = 1,
@@ -50,31 +50,7 @@ export abstract class Command {
     const result = await this.execute(msg, ...args);
 
     result.reply = String(result.reply).replace(/(\s+)|\n/g, ' ');
-
-    if (msg.type === 'message' && msg.channel.banphraseType === BanphraseTypes.PAJBOT) {
-      const { banned, banphrase_data } = await Pajbot.checkBanphrase(msg.channel, result.reply);
-
-      if (banned) {
-        let pattern: string;
-        let flags = 'g';
-
-        switch (banphrase_data.operator) {
-          case 'regex':
-            pattern = banphrase_data.phrase;
-            break;
-
-          case 'contains':
-            pattern = escapeStringRegexp(banphrase_data.phrase);
-            break;
-        }
-
-        if (!banphrase_data.case_sensitive) {
-          flags += 'i';
-        }
-
-        result.reply = result.reply.replace(new RegExp(pattern, flags), '[BANNED]');
-      }
-    }
+    result.reply =  await cleanBanphrases(result.reply, msg.channel);
 
     if (!result.noUsername) {
       result.reply = `${msg.user.name}, ${result.reply}`;
