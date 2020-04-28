@@ -1,5 +1,6 @@
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
 import { Channel } from './Channel';
+import { PlatformNames } from '../modules';
 
 export enum BanphraseTypes {
   REGEX = 'regex',
@@ -13,6 +14,9 @@ export class Banphrase {
 
   @ManyToOne(type => Channel, { nullable: true })
   channel?: Channel;
+
+  @Column({ nullable: true })
+  platform: PlatformNames;
 
   @Column()
   type: BanphraseTypes;

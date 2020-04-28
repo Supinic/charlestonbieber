@@ -50,7 +50,7 @@ export abstract class Command {
     const result = await this.execute(msg, ...args);
 
     result.reply = String(result.reply).replace(/(\s+)|\n/g, ' ');
-    result.reply =  await cleanBanphrases(result.reply, msg.channel);
+    result.reply =  await cleanBanphrases(result.reply, msg.channel, msg.platform);
 
     if (!result.noUsername) {
       result.reply = `${msg.user.name}, ${result.reply}`;

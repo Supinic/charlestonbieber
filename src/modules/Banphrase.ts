@@ -1,8 +1,8 @@
 import got from 'got';
 import escapeStringRegexp from 'escape-string-regexp';
 import { getRepository } from 'typeorm';
-import { Channel } from '../entities';
-import { Banphrase, BanphraseTypes as EBanphraseTypes } from '../entities';
+import { Channel, Banphrase, BanphraseTypes as EBanphraseTypes } from '../entities';
+import { Platform } from '../modules';
 
 export enum BanphraseTypes {
   PAJBOT = 'Pajbot',
@@ -63,10 +63,14 @@ export class Pajbot {
 export async function cleanBanphrases(
   message: string,
   channel: Channel,
+  platform: Platform,
   external: boolean = false,
 ): Promise<string> {
   const banphrases = (await getRepository(Banphrase).find({ relations: ['channel'] }))
-    .filter(i => i.channel === null || i.channel.id === channel.id);
+    .filter(i => (
+      i.channel === null || i.channel.id === channel.id
+        && i.platform === null || i.platform === platform.name
+    ));
 
   for (const { type, caseSensitive, banphrase, replaceWith } of banphrases) {
     let pattern: string;
