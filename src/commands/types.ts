@@ -69,7 +69,7 @@ export type WeatherData = {
   name: string;
   /** Internal parameter */
   cod: string;
-}
+};
 
 export type LocationData = {
   authenticationResultCode: string;
@@ -102,4 +102,33 @@ export type LocationData = {
       matchCodes: string[];
     }[];
   }[];
+}
+
+export namespace Misia {
+  export namespace Suggestion {
+    export enum States {
+      ACCEPTED = 'accepted',
+      DONE = 'done',
+      NEW = 'new',
+      NOT_A_SUGGESTION = 'not_a_suggestion',
+      REJECTED = 'rejected',
+    }
+
+    export interface Stats {
+      count: number;
+      count_hidden: number;
+      states: {
+        accepted: number;
+        done: number;
+        new: number;
+        not_a_suggestion: string;
+        rejected: string;
+      };
+      top_users: {
+        count: number;
+        id: number;
+        name: string;
+      }[];
+    }
+  }
 }

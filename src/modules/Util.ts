@@ -67,3 +67,7 @@ export function getOption(option: string, args: string[], splice: boolean = fals
     }
   }
 }
+
+export function addInvisibleChars(string: string): string {
+  return string.split('').join('\u{E0000}');
+}

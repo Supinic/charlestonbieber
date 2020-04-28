@@ -10,3 +10,4 @@ export * from './Help';
 export * from './Debug';
 export * from './Query';
 export * from './Pipe';
+export * from './Misia';

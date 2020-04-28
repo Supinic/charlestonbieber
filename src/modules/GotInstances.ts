@@ -16,3 +16,8 @@ export const bingMaps = json.extend({
   prefixUrl: 'https://dev.virtualearth.net/REST/v1',
   searchParams: { key: config.BING_MAPS_KEY },
 });
+
+export const misia = got.extend({
+  prefixUrl: 'https://kotmisia.pl/api',
+  headers: { 'User-Agent': config.TWITCH_USERNAME },
+});
