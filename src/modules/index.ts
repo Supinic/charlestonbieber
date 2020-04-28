@@ -1,4 +1,4 @@
-export * from './Channel';
+export * from './ChannelManager';
 export * from './Command';
 export * from './Platform';
 export * from './UserManager';

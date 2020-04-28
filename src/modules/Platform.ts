@@ -1,6 +1,6 @@
 import { getManager } from 'typeorm';
-import { Channel as ChannelEntity, User } from '../entities';
-import { Channel, ChannelLike, UserManager, Command, CooldownManager, Cooldown, MessageType } from '.';
+import { Channel, User } from '../entities';
+import { ChannelManager, ChannelLike, UserManager, Command, CooldownManager, Cooldown, MessageType } from '.';
 import { PREFIX } from '../config.json';
 
 export enum PlatformNames {
@@ -11,7 +11,7 @@ export abstract class Platform {
   abstract name: PlatformNames;
   abstract client: any;
 
-  abstract async message(channel: ChannelEntity, message: string): Promise<void>;
+  abstract async message(channel: Channel, message: string): Promise<void>;
   abstract async pm(user: User, message: string): Promise<void>;
 
   static platforms: Platform[];
@@ -36,7 +36,7 @@ export abstract class Platform {
         .split(' ');
       const command = Command.get(cmd);
 
-      channel = await Channel.get(channel);
+      channel = await ChannelManager.get(channel);
 
       let userObject = await UserManager.get(user.platformID);
 
