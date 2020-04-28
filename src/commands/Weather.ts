@@ -1,5 +1,5 @@
 import got from 'got';
-import { Command, Input, Output, User, Permissions, getOption } from '../modules';
+import { Command, Input, Output, UserManager, Permissions, getOption } from '../modules';
 import { OWM_KEY as appid } from '../config.json';
 import { WeatherData } from './types';
 
@@ -77,7 +77,7 @@ export class Weather extends Command {
       const token = args[i];
 
       if (token.startsWith('@')) {
-        const user = await User.get(token.slice(1));
+        const user = await UserManager.get(token.slice(1));
 
         if (user?.location) {
           const [lat, lon] = user.location;

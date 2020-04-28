@@ -1,6 +1,6 @@
 import { ChatClient, AlternateMessageModifier, SlowModeRateLimiter, PrivmsgMessage, WhisperMessage } from 'dank-twitch-irc';
 import { Channel, Platform, PlatformNames } from '../modules';
-import { Channel as ChannelEntity, User as UserEntity } from '../entities';
+import { Channel as ChannelEntity, User } from '../entities';
 
 import { TWITCH_USERNAME as username, TWITCH_PASSWORD as password } from '../config.json';
 
@@ -13,7 +13,7 @@ export class Twitch extends Platform {
     await this.client.say(channel.name, message);
   }
 
-  async pm(user: UserEntity, message: string): Promise<void> {
+  async pm(user: User, message: string): Promise<void> {
     await this.client.whisper(user.name, message);
   }
 
