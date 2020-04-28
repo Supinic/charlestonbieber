@@ -1,5 +1,5 @@
 import { createConnection } from 'typeorm';
-import { Platform, User, Channel, Command, StaticCommand } from './modules';
+import { Platform, Command, StaticCommand } from './modules';
 import { supi } from './modules/GotInstances';
 import ormConfig from './ormConfig';
 
