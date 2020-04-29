@@ -1,10 +1,10 @@
 import { createConnection } from 'typeorm';
-import { Platform, Command, StaticCommand } from './modules';
+import { Platform, Command, StaticCommandManager } from './modules';
 import { supi } from './modules/GotInstances';
 import ormConfig from './ormConfig';
 
 createConnection(ormConfig).then(async ({ manager }) => {
-  await StaticCommand.init(manager);
+  await StaticCommandManager.init(manager);
 
   Command.reload();
   Platform.reload();
