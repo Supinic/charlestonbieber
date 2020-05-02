@@ -16,7 +16,10 @@ export class Debug extends Command {
   async execute(msg: Command.Input, ...args: string[]): Promise<Command.Output> {
     try {
       const script = new Script(`(async () => { ${args.join(' ')} })()`);
-      const context = createContext({ msg, modules, entities });
+      const context = createContext({
+        cb: { ...modules, ...entities },
+        msg,
+      });
       let reply = await script.runInNewContext(context, { timeout: 5000 });
 
       return { reply: String(reply) };
