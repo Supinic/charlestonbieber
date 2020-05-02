@@ -71,3 +71,7 @@ export function getOption(option: string, args: string[], splice: boolean = fals
 export function addInvisibleChars(string: string): string {
   return string.split('').join('\u{E0000}');
 }
+
+export function createResponseFromObject(object: { [key: string]: string }): string {
+  return Object.entries(object).map(i => i.join(': ')).join(' | ');
+}

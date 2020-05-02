@@ -1,5 +1,5 @@
 import got from 'got';
-import { Command, UserManager, getOption } from '../modules';
+import { Command, UserManager, getOption, createResponseFromObject } from '../modules';
 import { OWM_KEY as appid } from '../config.json';
 import { WeatherData } from './types';
 
@@ -126,11 +126,6 @@ export class Weather extends Command {
       Humidity: `${data.main.humidity}%`,
     };
 
-    return {
-      reply: `
-        ${data.name}, ${data.sys.country || '🌐'} ${symbol}
-        ${Object.entries(res).map((i) => i.join(': ')).join(' | ')}
-      `,
-     };
+    return { reply: `${data.name}, ${data.sys.country || '🌐'} ${symbol} ${createResponseFromObject(res)}` };
   }
 }

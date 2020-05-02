@@ -1,4 +1,4 @@
-import { Command, timeDelta, Platform } from '../modules';
+import { Command, timeDelta, Platform, createResponseFromObject } from '../modules';
 
 export class Ping extends Command {
   name = 'ping';
@@ -25,6 +25,6 @@ export class Ping extends Command {
       Latency: `${latency}ms`,
     };
 
-    return { reply: `FeelsDankMan 🏓 pong! ${Object.entries(data).map((i) => i.join(': ')).join(' | ')}` };
+    return { reply: `FeelsDankMan 🏓 pong! ${createResponseFromObject(data)}` };
   }
 }
