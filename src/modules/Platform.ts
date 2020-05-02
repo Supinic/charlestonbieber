@@ -1,6 +1,6 @@
 import { getManager, getRepository } from 'typeorm';
 import { Channel, User, AFK } from '../entities';
-import { ChannelManager, ChannelLike, UserManager, Command, CooldownManager, Cooldown, MessageType } from '.';
+import { ChannelManager, ChannelLike, UserManager, Command, CooldownManager, Cooldown, MessageType, timeDelta } from '.';
 import { PREFIX } from '../config.json';
 
 export abstract class Platform {
@@ -35,14 +35,14 @@ export abstract class Platform {
       .find(i => i.active && i.user.id === userObject?.id);
 
     if (afk) {
-      if (type === 'message') {
-        this.message(channel, `${afk.user.name} is no longer AFK: ${afk.message || '(no message)'}`);
-      }
-
       afk.active = false;
       afk.end = timestamp;
 
       await manager.save(afk);
+
+      if (type === 'message') {
+        await this.message(channel, `${afk.user.name} is no longer AFK: ${afk.message || '(no message)'} (${timeDelta(afk.start)})`);
+      }
     }
 
     if (rawMessage.startsWith(PREFIX)) {
