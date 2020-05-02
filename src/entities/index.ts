@@ -4,3 +4,4 @@ export * from './MCUVerse';
 export * from './StaticComand';
 export * from './Suggestion';
 export * from './Banphrase';
+export * from './AFK';

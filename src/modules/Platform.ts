@@ -1,5 +1,5 @@
-import { getManager } from 'typeorm';
-import { Channel, User } from '../entities';
+import { getManager, getRepository } from 'typeorm';
+import { Channel, User, AFK } from '../entities';
 import { ChannelManager, ChannelLike, UserManager, Command, CooldownManager, Cooldown, MessageType } from '.';
 import { PREFIX } from '../config.json';
 
@@ -13,7 +13,7 @@ export abstract class Platform {
   static platforms: Platform[];
 
   static reload() {
-    const platforms: { [key: string]: new () => Platform } = require('../clients');
+    const platforms: { [key: string]: new () => Platform; } = require('../clients');
 
     this.platforms = Object.values(platforms).map(platform => new platform());
   }
@@ -24,17 +24,33 @@ export abstract class Platform {
 
   slowMode = false;
 
-  async handleCommand({ rawMessage, user, channel, timestamp, type }: RawInput) {
+  async handleMessage({ rawMessage, user, channel, timestamp, type }: RawInput): Promise<void> {
+    const manager = getManager();
+
+    channel = await ChannelManager.get(channel);
+
+    let userObject = await UserManager.get(user.platformID);
+
+    const afk = (await getRepository(AFK).find({ relations: ['user'] }))
+      .find(i => i.active && i.user.id === userObject?.id);
+
+    if (afk) {
+      if (type === 'message') {
+        this.message(channel, `${afk.user.name} is no longer AFK: ${afk.message || '(no message)'}`);
+      }
+
+      afk.active = false;
+      afk.end = timestamp;
+
+      await manager.save(afk);
+    }
+
     if (rawMessage.startsWith(PREFIX)) {
       const [cmd, ...args] = rawMessage
         .replace(/[\u034f\u2800\u{E0000}\u180e\ufeff\u2000-\u200d\u206D]/gu, '')
         .slice(PREFIX.length)
         .split(' ');
       const command = Command.get(cmd);
-
-      channel = await ChannelManager.get(channel);
-
-      let userObject = await UserManager.get(user.platformID);
 
       if (!userObject) {
         userObject = new User();
@@ -43,7 +59,7 @@ export abstract class Platform {
         userObject.platform = this.name;
         userObject.location = [];
 
-        await getManager().save(userObject);
+        await manager.save(userObject);
       }
 
       if (command && !this.slowMode) {

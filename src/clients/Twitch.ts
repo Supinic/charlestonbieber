@@ -28,7 +28,7 @@ export class Twitch extends Platform {
       this.client.joinAll((await ChannelManager.getJoinable(this)).map(i => i.name));
     });
 
-    this.client.on('PRIVMSG', async ({ messageText, senderUserID, channelID, serverTimestamp, senderUsername }: PrivmsgMessage) => await this.handleCommand({
+    this.client.on('PRIVMSG', async ({ messageText, senderUserID, channelID, serverTimestamp, senderUsername }: PrivmsgMessage) => await this.handleMessage({
       type: 'message',
       rawMessage: messageText,
       user: {
@@ -39,7 +39,7 @@ export class Twitch extends Platform {
       timestamp: serverTimestamp,
     }));
 
-    this.client.on('WHISPER', async ({ messageText, senderUserID, senderUsername }: WhisperMessage) => await this.handleCommand({
+    this.client.on('WHISPER', async ({ messageText, senderUserID, senderUsername }: WhisperMessage) => await this.handleMessage({
       type: 'pm',
       rawMessage: messageText,
       user: {
