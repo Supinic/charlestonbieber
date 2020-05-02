@@ -1,5 +1,10 @@
 build/
 
-node_modules/
+.yarn/*
+!.yarn/releases
+!.yarn/plugins
+.pnp.*
+
+.vscode/
 
 ecosystem.config.js

@@ -4,7 +4,8 @@
   "description": "Dank Twitch bot.",
   "main": "build/index.js",
   "scripts": {
-    "start": "tsc && node build"
+    "start": "node build/index.js",
+    "build": "yarn pnpify tsc"
   },
   "repository": {
     "type": "git",
@@ -33,6 +34,7 @@
     "@types/node": "^13.13.2",
     "@types/sqlite3": "^3.1.6",
     "@types/ws": "^7.2.3",
+    "@yarnpkg/pnpify": "^2.0.0-rc.21",
     "type-fest": "^0.13.1",
     "typescript": "^3.8.3"
   },

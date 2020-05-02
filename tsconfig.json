@@ -10,10 +10,12 @@
     "emitDecoratorMetadata": true,
     "target": "ES2015",
     "sourceMap": true,
+    "skipLibCheck": true,
   },
   "include": ["src"],
   "exclude": [
-    "node_modules",
+    ".yarn",
+    ".vscode",
     "build",
   ],
 }
