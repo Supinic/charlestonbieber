@@ -1,11 +1,11 @@
 import { ChatClient, AlternateMessageModifier, SlowModeRateLimiter, PrivmsgMessage, WhisperMessage } from 'dank-twitch-irc';
-import { ChannelManager, Platform, PlatformNames } from '../modules';
+import { ChannelManager, Platform } from '../modules';
 import { Channel, User } from '../entities';
 
 import { TWITCH_USERNAME as username, TWITCH_PASSWORD as password } from '../config.json';
 
 export class Twitch extends Platform {
-  name = PlatformNames.TWITCH;
+  name = Platform.Names.TWITCH;
 
   client = new ChatClient({ username, password, rateLimits: 'verifiedBot' });
 

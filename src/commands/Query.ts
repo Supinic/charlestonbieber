@@ -1,5 +1,5 @@
 import got from 'got';
-import { Command, Input, Output, Permissions, getOption } from '../modules';
+import { Command, getOption } from '../modules';
 import { WOLFRAM_APPID as appid } from '../config.json';
 
 export class Query extends Command {
@@ -9,9 +9,9 @@ export class Query extends Command {
   syntax = ['problem', 'units=?'];
   cooldown = 15000;
   data = null;
-  permission = Permissions.EVERYONE;
+  permission = Command.Permissions.EVERYONE;
 
-  async execute(_msg: Input, ...args: string[]): Promise<Output> {
+  async execute(_msg: Command.Input, ...args: string[]): Promise<Command.Output> {
     const searchParams = {
       units: getOption('units', args, true) || 'metric',
       appid,

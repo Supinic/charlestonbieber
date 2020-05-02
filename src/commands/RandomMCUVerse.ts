@@ -1,5 +1,5 @@
 import { getManager } from 'typeorm';
-import { Command, Output, randomItem, Permissions } from '../modules';
+import { Command, randomItem } from '../modules';
 import { MCUVerse } from '../entities';
 
 export class RandomMCUVerse extends Command {
@@ -9,9 +9,9 @@ export class RandomMCUVerse extends Command {
   syntax = [];
   cooldown = 5000;
   data = { verses: null };
-  permission = Permissions.EVERYONE;
+  permission = Command.Permissions.EVERYONE;
 
-  async execute(): Promise<Output> {
+  async execute(): Promise<Command.Output> {
     if (!this.data.verses) {
       this.data.verses = await getManager().find(MCUVerse);
     }

@@ -4,7 +4,7 @@ import WebSocket from 'ws';
 import { JsonObject } from 'type-fest';
 import { randomBytes } from 'crypto';
 import { getManager } from 'typeorm';
-import { Platform, ChannelManager, PlatformNames } from '../modules';
+import { Platform, ChannelManager } from '../modules';
 import { TWITCH_PASSWORD as auth_token } from '../config.json';
 
 interface PubSubMessage<T = JsonObject> {
@@ -38,7 +38,7 @@ export class PubSub extends Platform {
     this.client.onopen = async () => {
       console.info('Connected to PubSub. Subscribing to topics.');
 
-      const channels = await ChannelManager.getJoinable(Platform.get(PlatformNames.TWITCH));
+      const channels = await ChannelManager.getJoinable(Platform.get(Platform.Names.TWITCH));
 
       for (const { name, platformID } of channels) {
         this.send('LISTEN', {
@@ -93,7 +93,7 @@ export class PubSub extends Platform {
               case 'commercial':
                 console.debug(message);
 
-                await Platform.get(PlatformNames.TWITCH).message(channel, 'asd');
+                await Platform.get(Platform.Names.TWITCH).message(channel, 'asd');
                 break;
             }
           }

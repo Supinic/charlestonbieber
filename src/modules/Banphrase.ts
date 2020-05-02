@@ -1,7 +1,7 @@
 import got from 'got';
 import escapeStringRegexp from 'escape-string-regexp';
 import { getRepository } from 'typeorm';
-import { Channel, Banphrase, BanphraseTypes as EBanphraseTypes } from '../entities';
+import { Channel, Banphrase } from '../entities';
 import { Platform } from '../modules';
 
 export enum BanphraseTypes {
@@ -81,10 +81,10 @@ export async function cleanBanphrases(
     }
 
     switch (type) {
-      case EBanphraseTypes.REGEX:
+      case Banphrase.Types.REGEX:
         pattern = banphrase;
         break;
-      case EBanphraseTypes.CONTAINS:
+      case Banphrase.Types.CONTAINS:
         pattern = escapeStringRegexp(banphrase);
         break;
     }

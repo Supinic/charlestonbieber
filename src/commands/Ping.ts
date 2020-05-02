@@ -1,4 +1,4 @@
-import { Command, Input, Output, timeDelta, Platform, PlatformNames, Permissions } from '../modules';
+import { Command, timeDelta, Platform } from '../modules';
 
 export class Ping extends Command {
   name = 'ping';
@@ -7,12 +7,12 @@ export class Ping extends Command {
   syntax = [];
   cooldown = 5000;
   data = null;
-  permission = Permissions.EVERYONE;
+  permission = Command.Permissions.EVERYONE;
 
-  async execute({ platform }: Input): Promise<Output> {
+  async execute({ platform }: Command.Input): Promise<Command.Output> {
     let latency: number;
 
-    if (platform === Platform.get(PlatformNames.TWITCH)) {
+    if (platform === Platform.get(Platform.Names.TWITCH)) {
       const start = process.hrtime.bigint();
       await platform.client.ping();
       const end = process.hrtime.bigint();

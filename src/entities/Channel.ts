@@ -1,5 +1,5 @@
 import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
-import { PlatformNames, BanphraseTypes } from '../modules';
+import { Platform, BanphraseTypes } from '../modules';
 
 @Entity()
 export class Channel {
@@ -10,7 +10,7 @@ export class Channel {
   name: string;
 
   @Column()
-  platform: PlatformNames;
+  platform: Platform.Names;
 
   @Column()
   platformID: string;

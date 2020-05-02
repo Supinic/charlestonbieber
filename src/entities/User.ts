@@ -1,5 +1,5 @@
 import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
-import { PlatformNames } from '../modules';
+import { Platform } from '../modules';
 
 @Entity()
 export class User {
@@ -10,7 +10,7 @@ export class User {
   name: string;
 
   @Column()
-  platform: PlatformNames;
+  platform: Platform.Names;
 
   @Column()
   platformID: string;

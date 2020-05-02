@@ -1,5 +1,5 @@
 import { Script, createContext } from 'vm';
-import { Input, Output, Permissions, Command } from '../modules';
+import { Command } from '../modules';
 
 import * as modules from '../modules';
 import * as entities from '../entities';
@@ -10,10 +10,10 @@ export class Debug extends Command {
   cooldown = 0;
   description = 'Runs JavaScript and returns the result.';
   syntax = ['code'];
-  permission = Permissions.OWNER;
+  permission = Command.Permissions.OWNER;
   data = null;
 
-  async execute(msg: Input, ...args: string[]): Promise<Output> {
+  async execute(msg: Command.Input, ...args: string[]): Promise<Command.Output> {
     try {
       const script = new Script(`(async () => { ${args.join(' ')} })()`);
       const context = createContext({ msg, modules, entities });

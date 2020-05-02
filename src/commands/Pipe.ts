@@ -1,4 +1,4 @@
-import { Command, Input, Output, Permissions, CooldownManager, Cooldown } from '../modules';
+import { Command, CooldownManager, Cooldown } from '../modules';
 
 export class Pipe extends Command {
   name = 'pipe';
@@ -7,14 +7,14 @@ export class Pipe extends Command {
   syntax = ['commands'];
   cooldown = null;
   data = null;
-  permission = Permissions.EVERYONE;
+  permission = Command.Permissions.EVERYONE;
 
-  async execute(msg: Input, ...args: string[]): Promise<Output> {
+  async execute(msg: Command.Input, ...args: string[]): Promise<Command.Output> {
     const commands = args
       .join(' ')
       .split('|')
       .map(i => i.trim().split(' '));
-    let result: Output = { reply: '' };
+    let result: Command.Output = { reply: '' };
 
     for (const [cmd, ...cmdArgs] of commands) {
       const command = Command.get(cmd);

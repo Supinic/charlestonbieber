@@ -1,4 +1,4 @@
-import { Command, Input, Output, StaticCommandManager, Permissions } from '../modules';
+import { Command, StaticCommandManager } from '../modules';
 
 export class Static extends Command {
   name = null;
@@ -7,9 +7,9 @@ export class Static extends Command {
   description = '';
   cooldown = 0;
   data = { commands: StaticCommandManager.commands };
-  permission = Permissions.EVERYONE;
+  permission = Command.Permissions.EVERYONE;
 
-  async execute({ executedCommand }: Input): Promise<Output> {
+  async execute({ executedCommand }: Command.Input): Promise<Command.Output> {
     const command = StaticCommandManager.get(executedCommand);
 
     return {

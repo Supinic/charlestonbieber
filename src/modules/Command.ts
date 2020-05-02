@@ -1,46 +1,40 @@
 import escapeStringRegexp from 'escape-string-regexp';
 import { Channel, User } from '../entities';
-import { Platform, BanphraseTypes } from '.';
-import { Pajbot, cleanBanphrases } from './Banphrase';
-
-export enum Permissions {
-  OWNER = 1,
-  BROADCASTER = 2,
-  EVERYONE = 0,
-}
+import { Platform } from '.';
+import { cleanBanphrases } from './Banphrase';
 
 export abstract class Command {
   abstract name: string;
   abstract aliases: string[] = [];
   abstract cooldown: number;
   abstract data: object = null;
-  abstract permission: Permissions = Permissions.EVERYONE;
+  abstract permission: Command.Permissions = Command.Permissions.EVERYONE;
   abstract description: string;
   abstract syntax: string[];
 
-  abstract async execute(msg?: Input, ...args: string[]): Promise<Output>;
+  abstract async execute(msg?: Command.Input, ...args: string[]): Promise<Command.Output>;
 
-  checkPermission(msg: Input): Output {
+  checkPermission(msg: Command.Input): Command.Output {
     switch (this.permission) {
-      case Permissions.BROADCASTER:
+      case Command.Permissions.BROADCASTER:
         if (msg.user.platformID !== msg.channel.platformID) {
           return { reply: 'Only the broadcaster can use this command.' };
         }
         break;
 
-      case Permissions.OWNER:
+      case Command.Permissions.OWNER:
         if (msg.user.id !== 1) {
           return { reply: 'Only my owner can use this command.' };
         }
         break;
 
-      case Permissions.EVERYONE:
+      case Command.Permissions.EVERYONE:
       default:
         break;
     }
   }
 
-  async finalExecute(msg: Input, ...args: string[]): Promise<Output> {
+  async finalExecute(msg: Command.Input, ...args: string[]): Promise<Command.Output> {
     const notPermitted = this.checkPermission(msg);
 
     if (notPermitted) {
@@ -74,19 +68,27 @@ export abstract class Command {
 
 export type MessageType = 'message' | 'pm';
 
-export interface Input {
-  channel: Channel;
-  user: User;
-  platform: Platform;
-  rawMessage: string;
-  executedCommand: string;
-  timestamp: Date;
-  type: MessageType;
-}
+export namespace Command {
+  export interface Input {
+    channel: Channel;
+    user: User;
+    platform: Platform;
+    rawMessage: string;
+    executedCommand: string;
+    timestamp: Date;
+    type: MessageType;
+  }
 
-export interface Output {
-  reply: string;
-  cooldown?: number;
-  success?: boolean;
-  noUsername?: boolean;
+  export interface Output {
+    reply: string;
+    cooldown?: number;
+    success?: boolean;
+    noUsername?: boolean;
+  }
+
+  export enum Permissions {
+    OWNER = 1,
+    BROADCASTER = 2,
+    EVERYONE = 0,
+  }
 }

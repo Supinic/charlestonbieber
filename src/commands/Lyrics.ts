@@ -1,18 +1,5 @@
 import got from 'got';
-import { Command, Input, Output, Permissions } from '../modules';
-
-interface APIResponse {
-  title: string;
-  author: string;
-  lyrics: string;
-  thumbnail: {
-    genius?: string;
-  };
-  links: {
-    genius: string;
-  };
-  error: string;
-}
+import { Command } from '../modules';
 
 export class Lyrics extends Command {
   name = 'lyrics';
@@ -21,9 +8,9 @@ export class Lyrics extends Command {
   syntax = ['lyrics'];
   cooldown = 10000;
   data = null;
-  permission = Permissions.EVERYONE;
+  permission = Command.Permissions.EVERYONE;
 
-  async execute(_msg: Input, ...args: string[]): Promise<Output> {
+  async execute(_msg: Command.Input, ...args: string[]): Promise<Command.Output> {
     const lyrics = args.join(' ');
 
     if (!lyrics) {
@@ -34,7 +21,7 @@ export class Lyrics extends Command {
       };
     }
 
-    const data: APIResponse = await got({
+    const data: Lyrics.APIResponse = await got({
       url: 'https://some-random-api.ml/lyrics',
       searchParams: { title: lyrics },
     }).json();
@@ -48,5 +35,20 @@ export class Lyrics extends Command {
     }
 
     return { reply: `I guess that song is ${data.title} by ${data.author}` };
+  }
+}
+
+namespace Lyrics {
+  export interface APIResponse {
+    title: string;
+    author: string;
+    lyrics: string;
+    thumbnail: {
+      genius?: string;
+    };
+    links: {
+      genius: string;
+    };
+    error: string;
   }
 }

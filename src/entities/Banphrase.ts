@@ -1,11 +1,6 @@
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
 import { Channel } from './Channel';
-import { PlatformNames } from '../modules';
-
-export enum BanphraseTypes {
-  REGEX = 'regex',
-  CONTAINS = 'contains',
-}
+import { Platform } from '../modules';
 
 @Entity()
 export class Banphrase {
@@ -16,10 +11,10 @@ export class Banphrase {
   channel?: Channel;
 
   @Column({ nullable: true })
-  platform: PlatformNames;
+  platform: Platform.Names;
 
   @Column()
-  type: BanphraseTypes;
+  type: Banphrase.Types;
 
   @Column({ default: false })
   caseSensitive: boolean;
@@ -29,4 +24,11 @@ export class Banphrase {
 
   @Column({ default: 'Banphrase' })
   replaceWith: string;
+}
+
+export namespace Banphrase {
+  export enum Types {
+    REGEX = 'regex',
+    CONTAINS = 'contains',
+  }
 }

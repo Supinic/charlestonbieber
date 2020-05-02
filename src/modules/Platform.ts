@@ -3,12 +3,8 @@ import { Channel, User } from '../entities';
 import { ChannelManager, ChannelLike, UserManager, Command, CooldownManager, Cooldown, MessageType } from '.';
 import { PREFIX } from '../config.json';
 
-export enum PlatformNames {
-  TWITCH = 'Twitch',
-}
-
 export abstract class Platform {
-  abstract name: PlatformNames;
+  abstract name: Platform.Names;
   abstract client: any;
 
   abstract async message(channel: Channel, message: string): Promise<void>;
@@ -22,7 +18,7 @@ export abstract class Platform {
     this.platforms = Object.values(platforms).map(platform => new platform());
   }
 
-  static get(name: PlatformNames): Platform {
+  static get(name: Platform.Names): Platform {
     return this.platforms.find(i => i.name === name);
   }
 
@@ -84,6 +80,12 @@ export abstract class Platform {
         }
       }
     }
+  }
+}
+
+export namespace Platform {
+  export enum Names {
+    TWITCH = 'Twitch',
   }
 }
 

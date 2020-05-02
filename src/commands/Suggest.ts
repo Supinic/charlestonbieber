@@ -1,5 +1,5 @@
 import { getManager } from 'typeorm';
-import { Command, Input, Output, Permissions } from '../modules';
+import { Command } from '../modules';
 import { Suggestion } from '../entities';
 
 export class Suggest extends Command {
@@ -9,9 +9,9 @@ export class Suggest extends Command {
   description = 'Suggest something about the bot';
   cooldown = 10000;
   data = null;
-  permission = Permissions.EVERYONE;
+  permission = Command.Permissions.EVERYONE;
 
-  async execute(msg: Input, ...args: string[]): Promise<Output> {
+  async execute(msg: Command.Input, ...args: string[]): Promise<Command.Output> {
     const suggestion = args.join(' ');
 
     if (!suggestion) {

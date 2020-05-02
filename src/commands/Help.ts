@@ -1,4 +1,4 @@
-import { Input, Output, Permissions, Command } from '../modules';
+import { Command } from '../modules';
 import { PREFIX } from '../config.json';
 
 export class Help extends Command {
@@ -7,10 +7,10 @@ export class Help extends Command {
   description = 'Get help about a command';
   syntax = ['command'];
   cooldown = 5000;
-  permission = Permissions.EVERYONE;
+  permission = Command.Permissions.EVERYONE;
   data = null;
 
-  async execute({ executedCommand }: Input, command: string): Promise<Output> {
+  async execute({ executedCommand }: Command.Input, command: string): Promise<Command.Output> {
     if (executedCommand === 'commands') {
       const commands = Command.commands
         .map(i => i.name)

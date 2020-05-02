@@ -1,5 +1,5 @@
 import got from 'got';
-import { Command, Input, Output, UserManager, Permissions, getOption } from '../modules';
+import { Command, UserManager, getOption } from '../modules';
 import { OWM_KEY as appid } from '../config.json';
 import { WeatherData } from './types';
 
@@ -31,9 +31,9 @@ export class Weather extends Command {
       '50n': '🌁',
     },
   };
-  permission = Permissions.EVERYONE;
+  permission = Command.Permissions.EVERYONE;
 
-  async execute(msg: Input, ...args: string[]): Promise<Output> {
+  async execute(msg: Command.Input, ...args: string[]): Promise<Command.Output> {
     const searchParams = {
       units: getOption('units', args, true) || 'metric',
       appid,

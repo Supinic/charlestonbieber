@@ -1,17 +1,21 @@
 import { Misia as KotMisia } from './types';
-import { Command, Permissions, Input, Output, addInvisibleChars } from '../modules';
+import { Command, addInvisibleChars } from '../modules';
 import { misia } from '../modules/GotInstances';
 
 export class Misia extends Command {
   name = 'misia';
   aliases = ['kot', 'kotmisia'];
   cooldown = 15000;
-  permission = Permissions.EVERYONE;
+  permission = Command.Permissions.EVERYONE;
   description = 'A command to interact with Mm2🅱L\'s API.';
   syntax = ['command', 'args?'];
   data = null;
 
-  async execute(_msg: Input, command: 'test' | 'suggestions', ...args: string[]): Promise<Output> {
+  async execute(
+    _msg: Command.Input,
+    command: 'test' | 'suggestions',
+    ...args: string[]
+  ): Promise<Command.Output> {
     switch (command) {
       case 'test':
         return { reply: await misia(command).text() };

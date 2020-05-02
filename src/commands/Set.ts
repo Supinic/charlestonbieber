@@ -1,5 +1,5 @@
 import { getManager } from 'typeorm';
-import { Command, Input, Output, Permissions } from '../modules';
+import { Command,  } from '../modules';
 import { bingMaps } from '../modules/GotInstances';
 import { LocationData } from './types';
 
@@ -10,9 +10,9 @@ export class Set extends Command {
   description = 'Allows users to customize their variables within the bot';
   cooldown = 10000;
   data = null;
-  permission = Permissions.EVERYONE;
+  permission = Command.Permissions.EVERYONE;
 
-  async execute(msg: Input, variable: 'location', ...args: string[]): Promise<Output> {
+  async execute(msg: Command.Input, variable: 'location', ...args: string[]): Promise<Command.Output> {
     if (!variable) {
       return {
         reply: 'A variable must be provided',
