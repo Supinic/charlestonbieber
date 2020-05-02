@@ -21,7 +21,7 @@ export class Ping extends Command {
     }
 
     const data = {
-      Uptime: timeDelta(new Date(Date.now() - (process.uptime() * 1e3))).split('ago').join('').trim(),
+      Uptime: timeDelta(new Date(Date.now() - process.uptime() * 1000), true),
       Latency: `${latency}ms`,
     };
 
