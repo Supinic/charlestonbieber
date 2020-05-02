@@ -2,6 +2,7 @@ import { getManager, getRepository } from 'typeorm';
 import { Channel, User, AFK } from '../entities';
 import { ChannelManager, ChannelLike, UserManager, Command, CooldownManager, Cooldown, MessageType, timeDelta } from '.';
 import { PREFIX } from '../config.json';
+import { cleanBanphrases } from './Banphrase';
 
 export abstract class Platform {
   abstract name: Platform.Names;
@@ -24,6 +25,25 @@ export abstract class Platform {
 
   slowMode = false;
 
+  async send(type: MessageType, to: Channel | User, message: string) {
+    switch (type) {
+      case 'message':
+        message = await cleanBanphrases(message, to as Channel, this, true);
+
+        this.message(to as Channel, message);
+        break;
+
+      case 'pm':
+        message = await cleanBanphrases(message, null, this);
+
+        this.pm(to as User, message);
+        break;
+
+      default:
+        throw new Error('type must be "message" or "pm"');
+    }
+  }
+
   async handleMessage({ rawMessage, user, channel, timestamp, type }: RawInput): Promise<void> {
     const manager = getManager();
 
@@ -41,7 +61,7 @@ export abstract class Platform {
       await manager.save(afk);
 
       if (type === 'message') {
-        await this.message(channel, `${afk.user.name} is no longer AFK: ${afk.message || '(no message)'} (${timeDelta(afk.start)})`);
+        await this.send(type, channel, `${afk.user.name} is no longer AFK: ${afk.message || '(no message)'} (${timeDelta(afk.start)})`);
       }
     }
 
@@ -83,11 +103,7 @@ export abstract class Platform {
             cooldownObject.cooldown = cooldown;
           }
 
-          if (type === 'message') {
-            await this.message(channel, reply);
-          } else {
-            await this.pm(userObject, reply);
-          }
+          await this.send(type, type === 'message' ? channel : userObject, reply);
 
           this.slowMode = true;
           CooldownManager.add(cooldownObject);

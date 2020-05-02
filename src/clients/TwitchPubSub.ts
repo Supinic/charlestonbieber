@@ -32,7 +32,7 @@ export class PubSub extends Platform {
   manager = getManager();
   ping: NodeJS.Timeout;
 
-  connect() {
+  private connect() {
     this.client = new WebSocket('wss://pubsub-edge.twitch.tv');
 
     this.client.onopen = async () => {
@@ -41,7 +41,7 @@ export class PubSub extends Platform {
       const channels = await ChannelManager.getJoinable(Platform.get(Platform.Names.TWITCH));
 
       for (const { name, platformID } of channels) {
-        this.send('LISTEN', {
+        this.sendData('LISTEN', {
           topics: [
             this.createTopic('video-playback', name),
             this.createTopic('community-points-channel-v1', platformID),
@@ -50,7 +50,7 @@ export class PubSub extends Platform {
         });
       }
 
-      this.ping = setInterval(() => this.send('PING'), 3e5);
+      this.ping = setInterval(() => this.sendData('PING'), 3e5);
     };
 
     this.client.onmessage = async ({ data: stringifiedData }) => {
@@ -124,7 +124,7 @@ export class PubSub extends Platform {
     return [topic, channel].join('.');
   }
 
-  send(type: string, data?: JsonObject): void {
+  sendData(type: string, data?: JsonObject): void {
     this.client.send(JSON.stringify({
       type,
       data,
