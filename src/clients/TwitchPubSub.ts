@@ -70,7 +70,7 @@ export class PubSub extends Platform {
             switch (message.type) {
               case 'viewcount':
                 if (channel.live) {
-                  channel.viewers = message.viewers;
+                  channel.viewcount = message.viewers;
 
                   await this.manager.save(channel);
                 }
@@ -84,7 +84,7 @@ export class PubSub extends Platform {
 
               case 'stream-down':
                 channel.live = false;
-                channel.viewers = 0;
+                channel.viewcount = 0;
 
                 await this.manager.save(channel);
                 break;

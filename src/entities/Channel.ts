@@ -19,7 +19,7 @@ export class Channel {
   live: boolean;
 
   @Column()
-  viewers: number;
+  viewcount: number;
 
   @Column({ nullable: true })
   banphraseType?: BanphraseTypes;
