@@ -591,6 +591,7 @@ __metadata:
     "@types/ws": ^7.2.3
     "@yarnpkg/pnpify": ^2.0.0-rc.21
     dank-twitch-irc: ^3.0.7
+    dotenv: ^8.2.0
     escape-string-regexp: ^3.0.0
     got: ^10.7.0
     sqlite3: ^4.1.1
@@ -915,6 +916,13 @@ __metadata:
   version: 6.2.0
   resolution: "dotenv@npm:6.2.0"
   checksum: 2/2589b4c8e3d9a54eaad276d0a6a3821eb73250b439edd7ba70147dfe4e12148461919817506c7dfae3f1ea72a88cb38bf01b0656fe0c28e8e51df9391ef76e73
+  languageName: node
+  linkType: hard
+
+"dotenv@npm:^8.2.0":
+  version: 8.2.0
+  resolution: "dotenv@npm:8.2.0"
+  checksum: 2/16cb89cbd7b98b053899b8aba8c5044c8fb61a2db8a81fe70360b75035fce5fed53bd7a34d772be717d0880c0321122a4c09423f518025e1b52d96791521b1a7
   languageName: node
   linkType: hard
 

@@ -1,5 +1,4 @@
 import { Command } from '../modules';
-import { PREFIX } from '../config.json';
 
 export class Help extends Command {
   name = 'help';
@@ -42,6 +41,6 @@ export class Help extends Command {
       ? `(${cmd.aliases.join(', ')})`
       : '';
 
-    return { reply: `${PREFIX}${cmd.name} ${aliases} ${cmd.syntax.map(i => `<${i}>`)} | ${cmd.description} | Cooldown: ${cmd.cooldown / 1000} seconds` };
+    return { reply: `${process.env.PREFIX}${cmd.name} ${aliases} ${cmd.syntax.map(i => `<${i}>`)} | ${cmd.description} | Cooldown: ${cmd.cooldown / 1000} seconds` };
   }
 }

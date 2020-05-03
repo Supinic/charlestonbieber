@@ -1,7 +1,6 @@
 import { getManager, getRepository } from 'typeorm';
 import { Channel, User, AFK } from '../entities';
 import { ChannelManager, ChannelLike, UserManager, Command, CooldownManager, Cooldown, MessageType, timeDelta } from '.';
-import { PREFIX } from '../config.json';
 import { cleanBanphrases } from './Banphrase';
 
 export abstract class Platform {
@@ -65,10 +64,10 @@ export abstract class Platform {
       }
     }
 
-    if (rawMessage.startsWith(PREFIX)) {
+    if (rawMessage.startsWith(process.env.PREFIX)) {
       const [cmd, ...args] = rawMessage
         .replace(/[\u034f\u2800\u{E0000}\u180e\ufeff\u2000-\u200d\u206D]/gu, '')
-        .slice(PREFIX.length)
+        .slice(process.env.PREFIX.length)
         .split(' ');
       const command = Command.get(cmd);
 

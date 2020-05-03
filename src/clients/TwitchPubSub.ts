@@ -5,7 +5,6 @@ import { JsonObject } from 'type-fest';
 import { randomBytes } from 'crypto';
 import { getManager } from 'typeorm';
 import { Platform, ChannelManager } from '../modules';
-import { TWITCH_PASSWORD as auth_token } from '../config.json';
 
 interface PubSubMessage<T = JsonObject> {
   type: string;
@@ -46,7 +45,7 @@ export class PubSub extends Platform {
             this.createTopic('video-playback', name),
             this.createTopic('community-points-channel-v1', platformID),
           ],
-          auth_token,
+          auth_token: process.env.TWITCH_PASSWORD,
         });
       }
 

@@ -1,6 +1,5 @@
 import got from 'got';
 import { Command, getOption } from '../modules';
-import { WOLFRAM_APPID as appid } from '../config.json';
 
 export class Query extends Command {
   name = 'query';
@@ -14,7 +13,7 @@ export class Query extends Command {
   async execute(_msg: Command.Input, ...args: string[]): Promise<Command.Output> {
     const searchParams = {
       units: getOption('units', args, true) || 'metric',
-      appid,
+      appid: process.env.WOLFRAM_APPID,
     };
 
     if (!['metric', 'imperial'].includes(searchParams.units)) {

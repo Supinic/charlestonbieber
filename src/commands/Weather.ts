@@ -1,6 +1,5 @@
 import got from 'got';
 import { Command, UserManager, getOption, createResponseFromObject } from '../modules';
-import { OWM_KEY as appid } from '../config.json';
 import { WeatherData } from './types';
 
 export class Weather extends Command {
@@ -36,7 +35,7 @@ export class Weather extends Command {
   async execute(msg: Command.Input, ...args: string[]): Promise<Command.Output> {
     const searchParams = {
       units: getOption('units', args, true) || 'metric',
-      appid,
+      appid: process.env.OWM_KEY,
     };
 
     if (!['imperial', 'metric', 'default'].includes(searchParams.units)) {

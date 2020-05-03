@@ -1,5 +1,4 @@
 import { ConnectionOptions } from 'typeorm';
-import { DATABASE as database } from './config.json';
 
 import * as entities from './entities';
 
@@ -8,5 +7,5 @@ export default {
   synchronize: true,
   logging: false,
   entities: Object.values(entities),
-  database,
+  database: process.env.DATABASE,
 } as ConnectionOptions;

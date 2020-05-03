@@ -8,3 +8,6 @@ build/
 .vscode/
 
 ecosystem.config.*
+
+.env*
+!.env.example
