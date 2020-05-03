@@ -28,14 +28,14 @@
     "dank-twitch-irc": "^3.0.7",
     "dotenv": "^8.2.0",
     "escape-string-regexp": "^3.0.0",
-    "got": "^10.7.0",
-    "sqlite3": "^4.1.1",
-    "typeorm": "^0.3.0-alpha.24",
-    "ws": "^7.2.3"
+    "got": "^11.1.0",
+    "sqlite3": "^4.2.0",
+    "typeorm": "next",
+    "ws": "^7.2.5"
   },
   "devDependencies": {
-    "@types/node": "^13.13.2",
-    "@types/ws": "^7.2.3",
+    "@types/node": "^13.13.4",
+    "@types/ws": "^7.2.4",
     "@typescript-eslint/eslint-plugin": "^2.30.0",
     "@typescript-eslint/parser": "^2.30.0",
     "@yarnpkg/pnpify": "^2.0.0-rc.21",
