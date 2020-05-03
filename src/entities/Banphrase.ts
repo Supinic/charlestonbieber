@@ -7,7 +7,7 @@ export class Banphrase {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(type => Channel, { nullable: true })
+  @ManyToOne(() => Channel, { nullable: true })
   channel?: Channel;
 
   @Column({ nullable: true })

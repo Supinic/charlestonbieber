@@ -10,7 +10,7 @@ export interface Cooldown {
 export class CooldownManager {
   private static cooldowns = new Set<string>();
 
-  static has({ executedBy, command: { name } }: Cooldown) {
+  static has({ executedBy, command: { name } }: Cooldown): boolean {
     return this.cooldowns.has([executedBy.id, name].join());
   }
 

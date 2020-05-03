@@ -4,7 +4,7 @@ import { StaticCommand } from '../entities';
 export class StaticCommandManager {
   static commands: StaticCommand[];
 
-  static async init(manager: EntityManager) {
+  static async init(manager: EntityManager): Promise<void> {
     this.commands = await manager.find(StaticCommand);
   }
 

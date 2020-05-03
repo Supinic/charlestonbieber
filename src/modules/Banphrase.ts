@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/camelcase */
 import got from 'got';
 import escapeStringRegexp from 'escape-string-regexp';
 import { getRepository } from 'typeorm';
@@ -20,7 +21,7 @@ export class Pajbot {
       permanent: boolean;
       operator: 'regex' | 'contains';
       case_sensitive: boolean;
-    }
+    };
   }> {
     return await got({
       method: 'POST',
@@ -64,7 +65,7 @@ export async function cleanBanphrases(
   message: string,
   channel: Channel,
   platform: Platform,
-  external: boolean = false,
+  external = false,
 ): Promise<string> {
   const banphrases = (await getRepository(Banphrase).find({ relations: ['channel'] }))
     .filter(i => (

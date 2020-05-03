@@ -5,15 +5,16 @@ import { cleanBanphrases } from './Banphrase';
 
 export abstract class Platform {
   abstract name: Platform.Names;
-  abstract client: any;
+  abstract client: unknown;
 
   abstract async message(channel: Channel, message: string): Promise<void>;
   abstract async pm(user: User, message: string): Promise<void>;
 
   static platforms: Platform[];
 
-  static reload() {
-    const platforms: { [key: string]: new () => Platform; } = require('../clients');
+  static reload(): void {
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const platforms: { [key: string]: new () => Platform } = require('../clients');
 
     this.platforms = Object.values(platforms).map(platform => new platform());
   }
@@ -24,7 +25,7 @@ export abstract class Platform {
 
   slowMode = false;
 
-  async send(type: MessageType, to: Channel | User, message: string) {
+  async send(type: MessageType, to: Channel | User, message: string): Promise<void> {
     switch (type) {
       case 'message':
         message = await cleanBanphrases(message, to as Channel, this, true);
@@ -125,7 +126,7 @@ export interface RawInput {
     name: string;
     platformID: string;
   };
-  channel: ChannelLike,
+  channel: ChannelLike;
   rawMessage: string;
   timestamp: Date;
   type: MessageType;

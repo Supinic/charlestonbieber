@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/camelcase */
 import { Misia as KotMisia } from './types';
 import { Command, addInvisibleChars } from '../modules';
 import { misia } from '../modules/GotInstances';
@@ -22,14 +23,16 @@ export class Misia extends Command {
 
       case 'suggestions':
         switch (args[0] as 'stats') {
-          case 'stats':
+          case 'stats': {
             const { top_users }: KotMisia.Suggestion.Stats = await misia('suggestions/stats').json();
             const topUsers = top_users
               .map(({ name, count }, index) => `#${index + 1}: ${addInvisibleChars(name)} (${count})`)
               .join(' | ');
 
             return { reply: topUsers };
+          }
         }
+        break;
 
       default:
         return {

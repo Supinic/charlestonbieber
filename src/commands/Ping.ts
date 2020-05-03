@@ -1,4 +1,5 @@
 import { Command, timeDelta, Platform, createResponseFromObject } from '../modules';
+import { Twitch } from '../clients';
 
 export class Ping extends Command {
   name = 'ping';
@@ -14,7 +15,7 @@ export class Ping extends Command {
 
     if (platform === Platform.get(Platform.Names.TWITCH)) {
       const start = process.hrtime.bigint();
-      await platform.client.ping();
+      await (platform as Twitch).client.ping();
       const end = process.hrtime.bigint();
 
       latency = Math.round(Number(end - start) / 1e6);

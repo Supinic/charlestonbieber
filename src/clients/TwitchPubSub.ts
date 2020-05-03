@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-empty-function */
 // TriCatch
 
 import WebSocket from 'ws';
@@ -12,13 +13,13 @@ interface PubSubMessage<T = JsonObject> {
 }
 
 // FeelsGoodMan
-interface MESSAGE {
+interface Message {
   topic: string;
   message: string;
 }
 
 // FeelsAmazingMan
-interface MESSAGE_MESSAGE {
+interface MessageMessage {
   type: 'viewcount' | 'commercial' | 'stream-up' | 'stream-down' | 'reward-redeemed';
   viewers?: number;
 }
@@ -31,10 +32,10 @@ export class PubSub extends Platform {
   manager = getManager();
   ping: NodeJS.Timeout;
 
-  private connect() {
+  private connect(): void {
     this.client = new WebSocket('wss://pubsub-edge.twitch.tv');
 
-    this.client.onopen = async () => {
+    this.client.on('open', async () => {
       console.info('Connected to PubSub. Subscribing to topics.');
 
       const channels = await ChannelManager.getJoinable(Platform.get(Platform.Names.TWITCH));
@@ -45,15 +46,16 @@ export class PubSub extends Platform {
             this.createTopic('video-playback', name),
             this.createTopic('community-points-channel-v1', platformID),
           ],
+          // eslint-disable-next-line @typescript-eslint/camelcase
           auth_token: process.env.TWITCH_PASSWORD,
         });
       }
 
       this.ping = setInterval(() => this.sendData('PING'), 3e5);
-    };
+    });
 
-    this.client.onmessage = async ({ data: stringifiedData }) => {
-      const { data, type }: PubSubMessage<MESSAGE> = JSON.parse(stringifiedData as string);
+    this.client.on('message', async stringifiedData => {
+      const { data, type }: PubSubMessage<Message> = JSON.parse(stringifiedData as string);
 
       switch (type) {
         case 'PONG':
@@ -62,7 +64,7 @@ export class PubSub extends Platform {
 
         case 'MESSAGE':
           if (data) {
-            const message: MESSAGE_MESSAGE = JSON.parse(data.message);
+            const message: MessageMessage = JSON.parse(data.message);
             const { topic } = data;
             const channel = await ChannelManager.get(topic.replace(/^(video-playback|community-points-channel-v1)\./, ''));
 
@@ -103,14 +105,14 @@ export class PubSub extends Platform {
           this.client.close();
           break;
       }
-    };
+    });
 
-    this.client.onclose = () => {
+    this.client.on('close', () => {
       clearInterval(this.ping);
 
       this.client = null;
       this.connect();
-    };
+    });
   }
 
   constructor() {
@@ -131,6 +133,6 @@ export class PubSub extends Platform {
     }));
   }
 
-  async message() {}
-  async pm() {}
+  async message(): Promise<void> {}
+  async pm(): Promise<void> {}
 }

@@ -32,7 +32,7 @@ export class Set extends Command {
     }
 
     switch (variable) {
-      case 'location':
+      case 'location': {
         const data: LocationData = await bingMaps({
           url: `Locations/${encodeURIComponent(value)}`,
           searchParams: { maxResults: 1 },
@@ -52,6 +52,7 @@ export class Set extends Command {
         await getManager().save(msg.user);
 
         return { reply: 'Location has been successfully set' };
+      }
     }
   }
 }

@@ -5,7 +5,9 @@
   "main": "build/index.js",
   "scripts": {
     "start": "node -r dotenv/config build/index.js",
-    "build": "tsc"
+    "build": "tsc",
+    "lint": "eslint . --ext .ts",
+    "lint:fix": "eslint . --ext .ts --fix"
   },
   "repository": {
     "type": "git",
@@ -35,11 +37,11 @@
     "@types/node": "^13.13.2",
     "@types/sqlite3": "^3.1.6",
     "@types/ws": "^7.2.3",
+    "@typescript-eslint/eslint-plugin": "^2.30.0",
+    "@typescript-eslint/parser": "^2.30.0",
     "@yarnpkg/pnpify": "^2.0.0-rc.21",
+    "eslint": "^6.8.0",
     "type-fest": "^0.13.1",
     "typescript": "^3.8.3"
-  },
-  "engines": {
-    "node": ">=4.3.2"
   }
 }

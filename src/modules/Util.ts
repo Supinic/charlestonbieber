@@ -52,7 +52,7 @@ export function randomItem<T>(array: T[]): T {
   return array[Math.floor(Math.random() * array.length)];
 }
 
-export function getOption(option: string, args: string[], splice: boolean = false): string | undefined {
+export function getOption(option: string, args: string[], splice = false): string | undefined {
   for (let i = 0; i < args.length; i++) {
     const token = args[i];
 

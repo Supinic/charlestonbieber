@@ -6,7 +6,7 @@ export class AFK {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(type => User)
+  @ManyToOne(() => User)
   user: User;
 
   @Column({ default: Date.now() })

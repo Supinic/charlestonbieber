@@ -14,7 +14,7 @@ export class Suggestion {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(type => User)
+  @ManyToOne(() => User)
   user: User;
 
   @Column()

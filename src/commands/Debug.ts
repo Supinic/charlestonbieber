@@ -20,7 +20,7 @@ export class Debug extends Command {
         cb: { ...modules, ...entities },
         msg,
       });
-      let reply = await script.runInNewContext(context, { timeout: 5000 });
+      const reply = await script.runInNewContext(context, { timeout: 5000 });
 
       return { reply: String(reply) };
     } catch (e) {

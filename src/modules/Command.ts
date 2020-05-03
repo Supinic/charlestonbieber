@@ -1,7 +1,5 @@
-import escapeStringRegexp from 'escape-string-regexp';
 import { Channel, User } from '../entities';
 import { Platform } from '.';
-import { cleanBanphrases } from './Banphrase';
 
 export abstract class Command {
   abstract name: string;
@@ -52,13 +50,14 @@ export abstract class Command {
 
   static commands: Command[];
 
-  static reload() {
+  static reload(): void {
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
     const commands: { [key: string]: new () => Command } = require('../commands');
 
     this.commands = Object.values(commands).map(command => new command());
   }
 
-  static get(command: string) {
+  static get(command: string): Command {
     return this.commands.find(i => i.name === command || i.aliases.includes(command));
   }
 }
