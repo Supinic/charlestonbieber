@@ -12,10 +12,10 @@ export abstract class Platform {
 
   static platforms: Platform[];
 
-  static reload(): void {
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
-    const platforms: { [key: string]: new () => Platform } = require('../clients');
+  static async load(): Promise<void> {
+    const platforms = await import('../clients');
 
+    // @ts-ignore
     this.platforms = Object.values(platforms).map(platform => new platform());
   }
 

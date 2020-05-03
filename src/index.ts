@@ -6,8 +6,8 @@ import ormConfig from './ormConfig';
 createConnection(ormConfig).then(async ({ manager }) => {
   await StaticCommandManager.init(manager);
 
-  Command.reload();
-  Platform.reload();
+  await Command.load();
+  await Platform.load();
 
   setInterval(async () => await supi.put('bot-program/bot/active'), 60 * 60 * 1000);
 });

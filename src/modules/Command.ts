@@ -50,9 +50,8 @@ export abstract class Command {
 
   static commands: Command[];
 
-  static reload(): void {
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
-    const commands: { [key: string]: new () => Command } = require('../commands');
+  static async load(): Promise<void> {
+    const commands = await import('../commands');
 
     this.commands = Object.values(commands).map(command => new command());
   }
