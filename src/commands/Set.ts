@@ -21,9 +21,7 @@ export class Set extends Command {
       };
     }
 
-    const value = args.join(' ');
-
-    if (!value) {
+    if (args.length === 0) {
       return {
         reply: 'A value must be provided',
         cooldown: 2500,
@@ -31,6 +29,7 @@ export class Set extends Command {
       };
     }
 
+    const value = args.join(' ');
     const manager = getManager();
 
     switch (variable) {
@@ -64,12 +63,19 @@ export class Set extends Command {
         }
 
         const { channel } = msg;
-        [channel.prefix] = args;
+        channel.prefix = args.join(' ');
 
         await manager.save(channel);
 
         return { reply: `Prefix for this channel has been successfully set to ${channel.prefix}` };
       }
+
+      default:
+        return {
+          reply: 'That variable doesn\'t exist',
+          success: false,
+          cooldown: 5000,
+        };
     }
   }
 }
