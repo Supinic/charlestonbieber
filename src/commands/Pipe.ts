@@ -13,7 +13,7 @@ export class Pipe extends Command {
     const commands = args
       .join(' ')
       .split('|')
-      .map(i => i.trim().split(' '));
+      .map((i) => i.trim().split(' '));
     let result: Command.Output = { reply: '' };
 
     for (const [cmd, ...cmdArgs] of commands) {

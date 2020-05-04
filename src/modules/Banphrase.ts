@@ -3,31 +3,24 @@ import got from 'got';
 import escapeStringRegexp from 'escape-string-regexp';
 import { getRepository } from 'typeorm';
 import { Channel, Banphrase } from '../entities';
-import { Platform } from '../modules';
+import { Platform } from '.';
 
 export enum BanphraseTypes {
   PAJBOT = 'Pajbot',
 }
 
 export class Pajbot {
-  static async checkBanphrase({ banphraseURL }: Channel, message: string): Promise<{
-    banned: boolean;
-    input_message: string;
-    banphrase_data?: {
-      id: number;
-      name: string;
-      phrase: string;
-      length: number;
-      permanent: boolean;
-      operator: 'regex' | 'contains';
-      case_sensitive: boolean;
-    };
-  }> {
-    return await got({
+  static async checkBanphrase(
+    { banphraseURL }: Channel,
+    message: string,
+  ): Promise<Pajbot.Banphrase> {
+    const data: Pajbot.Banphrase = await got({
       method: 'POST',
       url: `https://${banphraseURL}/api/v1/banphrases/test`,
       form: { message },
     }).json();
+
+    return data;
   }
 
   static async clean(message: string, channel: Channel): Promise<string> {
@@ -36,6 +29,7 @@ export class Pajbot {
     }
 
     const { banned, banphrase_data } = await this.checkBanphrase(channel, message);
+    let msg = message;
 
     if (banned) {
       let pattern: string;
@@ -54,10 +48,26 @@ export class Pajbot {
           break;
       }
 
-      message = message.replace(new RegExp(pattern, flags), '[BANNED]');
+      msg = msg.replace(new RegExp(pattern, flags), '[BANNED]');
     }
 
-    return message;
+    return msg;
+  }
+}
+
+namespace Pajbot {
+  export interface Banphrase {
+    banned: boolean;
+    input_message: string;
+    banphrase_data?: {
+      id: number;
+      name: string;
+      phrase: string;
+      length: number;
+      permanent: boolean;
+      operator: 'regex' | 'contains';
+      case_sensitive: boolean;
+    };
   }
 }
 
@@ -68,12 +78,18 @@ export async function cleanBanphrases(
   external = false,
 ): Promise<string> {
   const banphrases = (await getRepository(Banphrase).find({ relations: ['channel'] }))
-    .filter(i => (
-      i.channel === null || i.channel.id === channel.id
-        && i.platform === null || i.platform === platform.name
+    .filter((i) => (
+      (i.channel === null || i.channel.id === channel.id)
+        && (i.platform === null || i.platform === platform.name)
     ));
+  let msg = message;
 
-  for (const { type, caseSensitive, banphrase, replaceWith } of banphrases) {
+  for (const {
+    type,
+    caseSensitive,
+    banphrase,
+    replaceWith,
+  } of banphrases) {
     let pattern: string;
     let flags = 'g';
 
@@ -90,16 +106,16 @@ export async function cleanBanphrases(
         break;
     }
 
-    message = message.replace(new RegExp(pattern, flags), `[object ${replaceWith}]`);
+    msg = msg.replace(new RegExp(pattern, flags), `[object ${replaceWith}]`);
   }
 
   if (external) {
     switch (channel.banphraseType) {
       case BanphraseTypes.PAJBOT:
-        message = await Pajbot.clean(message, channel);
+        msg = await Pajbot.clean(msg, channel);
         break;
     }
   }
 
-  return message;
+  return msg;
 }

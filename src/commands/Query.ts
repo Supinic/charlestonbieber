@@ -11,8 +11,12 @@ export class Query extends Command {
   permission = Command.Permissions.EVERYONE;
 
   async execute(_msg: Command.Input, ...args: string[]): Promise<Command.Output> {
-    const searchParams = {
-      units: getOption('units', args, true) || 'metric',
+    const searchParams: {
+      units: 'metric' | 'imperial';
+      appid: string;
+      i?: string;
+    } = {
+      units: getOption('units', args, true) as 'metric' | 'imperial' || 'metric',
       appid: process.env.WOLFRAM_APPID,
     };
 
@@ -24,7 +28,7 @@ export class Query extends Command {
       };
     }
 
-    if (!args.length) {
+    if (args.length === 0) {
       return {
         reply: 'A problem must be provided',
         success: false,
@@ -32,7 +36,7 @@ export class Query extends Command {
       };
     }
 
-    searchParams['i'] = args.join(' ');
+    searchParams.i = args.join(' ');
 
     const answer = await got({
       url: 'https://api.wolframalpha.com/v1/result',

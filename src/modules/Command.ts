@@ -12,7 +12,7 @@ export abstract class Command {
 
   abstract async execute(msg?: Command.Input, ...args: string[]): Promise<Command.Output>;
 
-  checkPermission(msg: Command.Input): Command.Output {
+  checkPermission(msg: Command.Input): Command.Output | null {
     switch (this.permission) {
       case Command.Permissions.BROADCASTER:
         if (msg.user.platformID !== msg.channel.platformID) {
@@ -53,11 +53,11 @@ export abstract class Command {
   static async load(): Promise<void> {
     const commands = await import('../commands');
 
-    this.commands = Object.values(commands).map(command => new command());
+    this.commands = Object.values(commands).map((Cmd) => new Cmd());
   }
 
   static get(command: string): Command {
-    return this.commands.find(i => i.name === command || i.aliases.includes(command));
+    return this.commands.find((i) => i.name === command || i.aliases.includes(command));
   }
 }
 

@@ -9,11 +9,11 @@ export class ChannelManager {
     return identifier instanceof Channel
       ? identifier
       : (await getManager().find(Channel))
-        .find(i => i.name === identifier || i.id === identifier || i.platformID === identifier);
+        .find((i) => i.name === identifier || i.id === identifier || i.platformID === identifier);
   }
 
   static async getJoinable(platform: Platform): Promise<Channel[]> {
     return (await getManager().find(Channel))
-      .filter(i => i.platform === platform.name);
+      .filter((i) => i.platform === platform.name);
   }
 }

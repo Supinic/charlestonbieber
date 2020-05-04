@@ -1,6 +1,15 @@
 import { getManager, getRepository } from 'typeorm';
 import { Channel, User, AFK } from '../entities';
-import { ChannelManager, ChannelLike, UserManager, Command, CooldownManager, Cooldown, MessageType, timeDelta } from '.';
+import {
+  ChannelManager,
+  ChannelLike,
+  UserManager,
+  Command,
+  CooldownManager,
+  Cooldown,
+  MessageType,
+  timeDelta,
+} from '.';
 import { cleanBanphrases } from './Banphrase';
 
 export abstract class Platform {
@@ -16,27 +25,29 @@ export abstract class Platform {
     const platforms = await import('../clients');
 
     // @ts-ignore
-    this.platforms = Object.values(platforms).map(platform => new platform());
+    this.platforms = Object.values(platforms).map((Client) => new Client());
   }
 
   static get(name: Platform.Names): Platform {
-    return this.platforms.find(i => i.name === name);
+    return this.platforms.find((i) => i.name === name);
   }
 
   slowMode = false;
 
   async send(type: MessageType, to: Channel | User, message: string): Promise<void> {
+    let msg = message;
+
     switch (type) {
       case 'message':
-        message = await cleanBanphrases(message, to as Channel, this, true);
+        msg = await cleanBanphrases(msg, to as Channel, this, true);
 
-        this.message(to as Channel, message);
+        this.message(to as Channel, msg);
         break;
 
       case 'pm':
-        message = await cleanBanphrases(message, null, this);
+        msg = await cleanBanphrases(msg, null, this);
 
-        this.pm(to as User, message);
+        this.pm(to as User, msg);
         break;
 
       default:
@@ -44,15 +55,20 @@ export abstract class Platform {
     }
   }
 
-  async handleMessage({ rawMessage, user, channel, timestamp, type }: RawInput): Promise<void> {
+  async handleMessage({
+    rawMessage,
+    user,
+    channel,
+    timestamp,
+    type,
+  }: RawInput): Promise<void> {
     const manager = getManager();
 
-    channel = await ChannelManager.get(channel);
-
+    const channelObject = await ChannelManager.get(channel);
     let userObject = await UserManager.get(user.platformID);
 
     const afk = (await getRepository(AFK).find({ relations: ['user'] }))
-      .find(i => i.active && i.user.id === userObject?.id);
+      .find((i) => i.active && i.user.id === userObject?.id);
 
     if (afk) {
       afk.active = false;
@@ -61,7 +77,7 @@ export abstract class Platform {
       await manager.save(afk);
 
       if (type === 'message') {
-        await this.send(type, channel, `${afk.user.name} is no longer AFK: ${afk.message || '(no message)'} (${timeDelta(afk.start)})`);
+        await this.send(type, channelObject, `${afk.user.name} is no longer AFK: ${afk.message || '(no message)'} (${timeDelta(afk.start)})`);
       }
     }
 
@@ -84,14 +100,14 @@ export abstract class Platform {
 
       if (command && !this.slowMode) {
         const cooldownObject: Cooldown = {
-          executedBy: type === 'message' ? channel : userObject,
+          executedBy: type === 'message' ? channelObject : userObject,
           command,
         };
 
         if (!CooldownManager.has(cooldownObject)) {
           const { reply, cooldown } = await command.finalExecute({
             user: userObject,
-            channel,
+            channel: channelObject,
             timestamp,
             rawMessage,
             type,
@@ -103,12 +119,14 @@ export abstract class Platform {
             cooldownObject.cooldown = cooldown;
           }
 
-          await this.send(type, type === 'message' ? channel : userObject, reply);
+          await this.send(type, type === 'message' ? channelObject : userObject, reply);
 
           this.slowMode = true;
           CooldownManager.add(cooldownObject);
 
-          setTimeout(() => this.slowMode = false, 1000);
+          setTimeout(() => {
+            this.slowMode = false;
+          }, 1000);
         }
       }
     }

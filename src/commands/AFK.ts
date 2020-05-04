@@ -14,7 +14,7 @@ export class AwayFromKeyboard extends Command {
   async execute({ timestamp, user }: Command.Input, ...args: string[]): Promise<Command.Output> {
     const afk = new AFK();
 
-    if (args.length) {
+    if (args.length > 0) {
       afk.message = args.join(' ');
     }
 

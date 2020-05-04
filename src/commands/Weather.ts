@@ -1,6 +1,11 @@
 import got from 'got';
-import { Command, UserManager, getOption, createResponseFromObject } from '../modules';
 import { WeatherData } from './types';
+import {
+  Command,
+  UserManager,
+  getOption,
+  createResponseFromObject,
+} from '../modules';
 
 export class Weather extends Command {
   name = 'weather';
@@ -33,8 +38,14 @@ export class Weather extends Command {
   permission = Command.Permissions.EVERYONE;
 
   async execute(msg: Command.Input, ...args: string[]): Promise<Command.Output> {
-    const searchParams = {
-      units: getOption('units', args, true) || 'metric',
+    const searchParams: {
+      units: 'metric' | 'imperial';
+      appid: string;
+      lat?: string;
+      lon?: string;
+      q?: string;
+    } = {
+      units: getOption('units', args, true) as 'metric' | 'imperial' || 'metric',
       appid: process.env.OWM_KEY,
     };
 
@@ -67,12 +78,12 @@ export class Weather extends Command {
       }
 
       if (lat && lon) {
-        searchParams['lat'] = lat;
-        searchParams['lon'] = lon;
+        searchParams.lat = lat;
+        searchParams.lon = lon;
       }
     }
 
-    for (let i = 0; i < args.length; i++) {
+    for (let i = 0; i < args.length; i += 1) {
       const token = args[i];
 
       if (token.startsWith('@')) {
@@ -81,21 +92,21 @@ export class Weather extends Command {
         if (user?.location) {
           const [lat, lon] = user.location;
 
-          searchParams['lat'] = lat;
-          searchParams['lon'] = lon;
+          searchParams.lat = lat;
+          searchParams.lon = lon;
 
           args.splice(i, 1);
         }
       }
     }
 
-    if (args.length) {
-      searchParams['q'] = args.join(' ');
+    if (args.length > 0) {
+      searchParams.q = args.join(' ');
     } else if (!('lat' in searchParams && 'lon' in searchParams) && msg.user.location) {
       const [lat, lon] = msg.user.location;
 
-      searchParams['lat'] = lat
-      searchParams['lon'] = lon;
+      searchParams.lat = lat;
+      searchParams.lon = lon;
     } else if (!('lat' in searchParams && 'lon' in searchParams)) {
       return {
         reply: 'A location must be provided',
@@ -115,7 +126,8 @@ export class Weather extends Command {
     }
 
     const symbol = this.data.symbols[data.weather[0].icon];
-    const deg = `${searchParams.units === 'metric' ? '°C' : searchParams.units === 'imperial' ? '°F' : 'K'}`;
+    const imperialOrDefault = searchParams.units === 'imperial' ? '°F' : 'K';
+    const deg = `${searchParams.units === 'metric' ? '°C' : imperialOrDefault}`;
 
     const res = {
       Temperature: data.main.temp + deg,

@@ -12,8 +12,8 @@ export class Help extends Command {
   async execute({ executedCommand }: Command.Input, command: string): Promise<Command.Output> {
     if (executedCommand === 'commands') {
       const commands = Command.commands
-        .map(i => i.name)
-        .filter(i => i !== null)
+        .map((i) => i.name)
+        .filter((i) => i !== null)
         .join(', ');
 
       return { reply: `Available commands: ${commands}` };
@@ -41,6 +41,6 @@ export class Help extends Command {
       ? `(${cmd.aliases.join(', ')})`
       : '';
 
-    return { reply: `${process.env.PREFIX}${cmd.name} ${aliases} ${cmd.syntax.map(i => `<${i}>`)} | ${cmd.description} | Cooldown: ${cmd.cooldown / 1000} seconds` };
+    return { reply: `${process.env.PREFIX}${cmd.name} ${aliases} ${cmd.syntax.map((i) => `<${i}>`)} | ${cmd.description} | Cooldown: ${cmd.cooldown / 1000} seconds` };
   }
 }

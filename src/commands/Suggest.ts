@@ -12,15 +12,15 @@ export class Suggest extends Command {
   permission = Command.Permissions.EVERYONE;
 
   async execute(msg: Command.Input, ...args: string[]): Promise<Command.Output> {
-    const suggestion = args.join(' ');
-
-    if (!suggestion) {
+    if (args.length === 0) {
       return {
         reply: 'Please provide a suggestion??? FeelsDankMan',
         success: false,
         cooldown: 5000,
       };
     }
+
+    const suggestion = args.join(' ');
 
     const suggestionObject = new Suggestion();
     suggestionObject.date = msg.timestamp;

@@ -5,12 +5,29 @@ env:
 parser: '@typescript-eslint/parser'
 parserOptions:
   sourceType: module
+  project: ./tsconfig.json
 plugins:
   - '@typescript-eslint'
 extends:
   - eslint:recommended
   - plugin:@typescript-eslint/eslint-recommended
   - plugin:@typescript-eslint/recommended
+
+  - airbnb-typescript/base
 rules:
   '@typescript-eslint/no-namespace': off
   '@typescript-eslint/ban-ts-ignore': off
+
+  import/prefer-default-export: off
+  import/no-cycle: off
+  import/export: off
+
+  class-methods-use-this: off
+  consistent-return: off
+  default-case: off
+  lines-between-class-members: off
+  no-await-in-loop: off
+  no-console: off
+  no-restricted-syntax: off
+  no-return-await: off
+  no-redeclare: off

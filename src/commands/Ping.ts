@@ -1,5 +1,10 @@
-import { Command, timeDelta, Platform, createResponseFromObject } from '../modules';
 import { Twitch } from '../clients';
+import {
+  Command,
+  timeDelta,
+  Platform,
+  createResponseFromObject,
+} from '../modules';
 
 export class Ping extends Command {
   name = 'ping';

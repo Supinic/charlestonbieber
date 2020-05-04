@@ -1,5 +1,6 @@
 /**
- * Returns a formatted string, specifying an amount of time delta from current date to provided date.
+ * Returns a formatted string, specifying an amount of time delta from current date to
+ * provided date.
  * @param target
  * @param skipAffixes if true, the affixes 'in X hours' or 'X hours ago' will be omitted
  * @author Supinic
@@ -14,8 +15,12 @@ export function timeDelta(target: Date, skipAffixes = false): string {
   const delta = Math.abs(now.valueOf() - target.valueOf());
   const [prefix, suffix] = target > now ? ['in ', ''] : ['', ' ago'];
   const timeUnits = {
-    y: { d: 365, h: 8760, m: 525600, s: 31536000, ms: 31536000e3 },
-    d: { h: 24, m: 1440, s: 86400, ms: 86400e3 },
+    y: {
+      d: 365, h: 8760, m: 525600, s: 31536000, ms: 31536000e3,
+    },
+    d: {
+      h: 24, m: 1440, s: 86400, ms: 86400e3,
+    },
     h: { m: 60, s: 3600, ms: 3600e3 },
     m: { s: 60, ms: 60e3 },
     s: { ms: 1e3 },
@@ -53,7 +58,7 @@ export function randomItem<T>(array: T[]): T {
 }
 
 export function getOption(option: string, args: string[], splice = false): string | undefined {
-  for (let i = 0; i < args.length; i++) {
+  for (let i = 0; i < args.length; i += 1) {
     const token = args[i];
 
     if (token.startsWith(`${option}=`)) {
@@ -73,5 +78,5 @@ export function addInvisibleChars(string: string): string {
 }
 
 export function createResponseFromObject(object: { [key: string]: string }): string {
-  return Object.entries(object).map(i => i.join(': ')).join(' | ');
+  return Object.entries(object).map((i) => i.join(': ')).join(' | ');
 }

@@ -21,6 +21,9 @@ export class CooldownManager {
 
     const cooldownString = [cooldown.executedBy.id, cooldown.command.name].join();
     this.cooldowns.add(cooldownString);
-    setTimeout(() => this.cooldowns.delete(cooldownString), cooldown.cooldown ?? cooldown.command.cooldown);
+    setTimeout(
+      () => this.cooldowns.delete(cooldownString),
+      cooldown.cooldown ?? cooldown.command.cooldown,
+    );
   }
 }

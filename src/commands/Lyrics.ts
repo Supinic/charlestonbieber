@@ -11,15 +11,15 @@ export class Lyrics extends Command {
   permission = Command.Permissions.EVERYONE;
 
   async execute(_msg: Command.Input, ...args: string[]): Promise<Command.Output> {
-    const lyrics = args.join(' ');
-
-    if (!lyrics) {
+    if (args.length === 0) {
       return {
         reply: 'Lyrics must be provided',
         cooldown: 2500,
         success: false,
       };
     }
+
+    const lyrics = args.join(' ');
 
     const data: Lyrics.APIResponse = await got({
       url: 'https://some-random-api.ml/lyrics',

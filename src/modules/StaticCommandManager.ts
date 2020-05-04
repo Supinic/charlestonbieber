@@ -9,6 +9,6 @@ export class StaticCommandManager {
   }
 
   static get(identifier: string): StaticCommand {
-    return this.commands.find(i => i.name === identifier);
+    return this.commands.find((i) => i.name === identifier);
   }
 }

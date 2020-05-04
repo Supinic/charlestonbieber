@@ -1,4 +1,10 @@
-import { ChatClient, AlternateMessageModifier, SlowModeRateLimiter, PrivmsgMessage, WhisperMessage } from 'dank-twitch-irc';
+import {
+  ChatClient,
+  AlternateMessageModifier,
+  SlowModeRateLimiter,
+  PrivmsgMessage,
+  WhisperMessage,
+} from 'dank-twitch-irc';
 import { ChannelManager, Platform } from '../modules';
 import { Channel, User } from '../entities';
 
@@ -26,10 +32,16 @@ export class Twitch extends Platform {
 
     this.client.on('ready', async () => {
       console.info('Connected to Twitch IRC. Joining channels.');
-      this.client.joinAll((await ChannelManager.getJoinable(this)).map(i => i.name));
+      this.client.joinAll((await ChannelManager.getJoinable(this)).map((i) => i.name));
     });
 
-    this.client.on('PRIVMSG', async ({ messageText, senderUserID, channelID, serverTimestamp, senderUsername }: PrivmsgMessage) => await this.handleMessage({
+    this.client.on('PRIVMSG', async ({
+      messageText,
+      senderUserID,
+      channelID,
+      serverTimestamp,
+      senderUsername,
+    }: PrivmsgMessage) => await this.handleMessage({
       type: 'message',
       rawMessage: messageText,
       user: {

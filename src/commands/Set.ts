@@ -1,5 +1,5 @@
 import { getManager } from 'typeorm';
-import { Command,  } from '../modules';
+import { Command } from '../modules';
 import { bingMaps } from '../modules/GotInstances';
 import { LocationData } from './types';
 
@@ -48,8 +48,9 @@ export class Set extends Command {
           };
         }
 
-        msg.user.location = location.point.coordinates;
-        await getManager().save(msg.user);
+        const { user } = msg;
+        user.location = location.point.coordinates;
+        await getManager().save(user);
 
         return { reply: 'Location has been successfully set' };
       }

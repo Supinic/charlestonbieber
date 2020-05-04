@@ -54,7 +54,7 @@ export class PubSub extends Platform {
       this.ping = setInterval(() => this.sendData('PING'), 3e5);
     });
 
-    this.client.on('message', async stringifiedData => {
+    this.client.on('message', async (stringifiedData) => {
       const { data, type }: PubSubMessage<Message> = JSON.parse(stringifiedData as string);
 
       switch (type) {

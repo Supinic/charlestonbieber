@@ -1,3 +1,5 @@
+/* eslint-disable max-len */
+
 export type WeatherData = {
   coord: {
     /** City geo location, longitude */
@@ -102,7 +104,7 @@ export type LocationData = {
       matchCodes: string[];
     }[];
   }[];
-}
+};
 
 export namespace Misia {
   export namespace Suggestion {
