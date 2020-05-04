@@ -56,17 +56,17 @@ export class Pipe extends Command {
         };
       }
 
-      result = await command.execute(msg, result.reply, ...cmdArgs);
+      result = await command.execute(msg, ...cmdArgs, result.reply || '');
 
-      if ('success' in result && !result.success) {
+      if (result?.success === false) {
         return {
           reply: `Command ${command.name} failed: ${result.reply}`,
-          cooldown: result.cooldown,
+          cooldown: result.cooldown ?? command.cooldown,
           success: false,
         };
       }
 
-      if (result.cooldown) {
+      if (typeof result?.cooldown !== 'undefined') {
         cooldown.cooldown = result.cooldown;
       }
 

@@ -105,7 +105,7 @@ export abstract class Platform {
         };
 
         if (!CooldownManager.has(cooldownObject)) {
-          const { reply, cooldown } = await command.finalExecute({
+          const result = await command.finalExecute({
             user: userObject,
             channel: channelObject,
             timestamp,
@@ -114,6 +114,12 @@ export abstract class Platform {
             platform: this,
             executedCommand: cmd,
           }, ...args);
+
+          if (!result) {
+            return;
+          }
+
+          const { reply, cooldown } = result;
 
           if (cooldown) {
             cooldownObject.cooldown = cooldown;
