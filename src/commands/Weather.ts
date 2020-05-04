@@ -41,8 +41,8 @@ export class Weather extends Command {
     const searchParams: {
       units: 'metric' | 'imperial';
       appid: string;
-      lat?: string;
-      lon?: string;
+      lat?: string | number;
+      lon?: string | number;
       q?: string;
     } = {
       units: getOption('units', args, true) as 'metric' | 'imperial' || 'metric',
