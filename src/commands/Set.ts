@@ -12,7 +12,7 @@ export class Set extends Command {
   data = null;
   permission = Command.Permissions.EVERYONE;
 
-  async execute(msg: Command.Input, variable: 'location', ...args: string[]): Promise<Command.Output> {
+  async execute(msg: Command.Input, variable: 'location' | 'prefix', ...args: string[]): Promise<Command.Output> {
     if (!variable) {
       return {
         reply: 'A variable must be provided',
@@ -30,6 +30,8 @@ export class Set extends Command {
         success: false,
       };
     }
+
+    const manager = getManager();
 
     switch (variable) {
       case 'location': {
@@ -50,9 +52,23 @@ export class Set extends Command {
 
         const { user } = msg;
         user.location = location.point.coordinates;
-        await getManager().save(user);
+
+        await manager.save(user);
 
         return { reply: 'Location has been successfully set' };
+      }
+
+      case 'prefix': {
+        if (msg.user.id !== 1) {
+          return;
+        }
+
+        const { channel } = msg;
+        [channel.prefix] = args;
+
+        await manager.save(channel);
+
+        return { reply: `Prefix for this channel has been successfully set to ${channel.prefix}` };
       }
     }
   }

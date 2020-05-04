@@ -81,10 +81,10 @@ export abstract class Platform {
       }
     }
 
-    if (rawMessage.startsWith(process.env.PREFIX)) {
+    if (rawMessage.startsWith(channelObject.prefix)) {
       const [cmd, ...args] = rawMessage
         .replace(/[\u034f\u2800\u{E0000}\u180e\ufeff\u2000-\u200d\u206D]/gu, '')
-        .slice(process.env.PREFIX.length)
+        .slice(channelObject.prefix.length)
         .split(' ');
       const command = Command.get(cmd);
 

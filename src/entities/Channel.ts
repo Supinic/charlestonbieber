@@ -15,6 +15,9 @@ export class Channel {
   @Column()
   platformID: string;
 
+  @Column({ default: process.env.DEFAULT_PREFIX })
+  prefix: string;
+
   @Column()
   live: boolean;
 

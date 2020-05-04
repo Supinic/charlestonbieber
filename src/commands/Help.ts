@@ -9,7 +9,10 @@ export class Help extends Command {
   permission = Command.Permissions.EVERYONE;
   data = null;
 
-  async execute({ executedCommand }: Command.Input, command: string): Promise<Command.Output> {
+  async execute(
+    { executedCommand, channel }: Command.Input,
+    command: string,
+  ): Promise<Command.Output> {
     if (executedCommand === 'commands') {
       const commands = Command.commands
         .map((i) => i.name)
@@ -41,6 +44,6 @@ export class Help extends Command {
       ? `(${cmd.aliases.join(', ')})`
       : '';
 
-    return { reply: `${process.env.PREFIX}${cmd.name} ${aliases} ${cmd.syntax.map((i) => `<${i}>`)} | ${cmd.description} | Cooldown: ${cmd.cooldown / 1000} seconds` };
+    return { reply: `${channel.prefix}${cmd.name} ${aliases} ${cmd.syntax.map((i) => `<${i}>`)} | ${cmd.description} | Cooldown: ${cmd.cooldown / 1000} seconds` };
   }
 }

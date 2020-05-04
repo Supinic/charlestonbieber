@@ -41,7 +41,7 @@ export abstract class Command {
 
     const result = await this.execute(msg, ...args);
 
-    if (!result.noUsername) {
+    if (!result?.noUsername) {
       result.reply = `${msg.user.name}, ${result.reply}`;
     }
 
