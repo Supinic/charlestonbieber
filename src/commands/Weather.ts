@@ -9,7 +9,7 @@ import {
 
 export class Weather extends Command {
   name = 'weather';
-  aliases = [];
+  aliases = null;
   syntax = ['location?', 'lat=?', 'lon=?', 'units=?'];
   description = 'Returns the current weather forecast for specified location or user\'s default location';
   cooldown = 10000;

@@ -5,7 +5,7 @@ import { LocationData } from './types';
 
 export class Set extends Command {
   name = 'set';
-  aliases = [];
+  aliases = null;
   syntax = ['variable', 'value'];
   description = 'Allows users to customize their variables within the bot';
   cooldown = 10000;

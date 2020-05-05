@@ -3,7 +3,7 @@ import { Command, StaticCommandManager } from '../modules';
 export class Static extends Command {
   name = null;
   aliases = StaticCommandManager.commands.map((i) => i.name);
-  syntax = [];
+  syntax = null;
   description = '';
   cooldown = 0;
   data = { commands: StaticCommandManager.commands };

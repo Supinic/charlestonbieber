@@ -2,7 +2,7 @@ import { Command, CooldownManager, Cooldown } from '../modules';
 
 export class Pipe extends Command {
   name = 'pipe';
-  aliases = [];
+  aliases = null;
   description = 'Allows users pipe the result of one command to another command';
   syntax = ['commands'];
   cooldown = null;

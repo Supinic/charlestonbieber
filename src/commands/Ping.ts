@@ -8,9 +8,9 @@ import {
 
 export class Ping extends Command {
   name = 'ping';
-  aliases = [];
+  aliases = null;
   description = 'See if the bot is alive';
-  syntax = [];
+  syntax = null;
   cooldown = 5000;
   data = null;
   permission = Command.Permissions.EVERYONE;

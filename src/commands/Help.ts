@@ -10,7 +10,7 @@ export class Help extends Command {
   data = null;
 
   async execute(
-    { executedCommand, channel }: Command.Input,
+    { executedCommand, channel: { prefix } }: Command.Input,
     command: string,
   ): Promise<Command.Output> {
     if (executedCommand === 'commands') {
@@ -40,10 +40,12 @@ export class Help extends Command {
       };
     }
 
-    const aliases = cmd.aliases.length
+    const syntax = cmd.syntax?.map?.((i) => `<${i}>`) || '';
+    const cooldown = cmd.cooldown / 1000;
+    const aliases = cmd.aliases
       ? `(${cmd.aliases.join(', ')})`
       : '';
 
-    return { reply: `${channel.prefix}${cmd.name} ${aliases} ${cmd.syntax.map((i) => `<${i}>`)} | ${cmd.description} | Cooldown: ${cmd.cooldown / 1000} seconds` };
+    return { reply: `${prefix}${cmd.name} ${aliases} ${syntax} | ${cmd.description} | Cooldown: ${cooldown} seconds` };
   }
 }

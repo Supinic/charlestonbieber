@@ -3,12 +3,12 @@ import { Platform } from '.';
 
 export abstract class Command {
   abstract name: string;
-  abstract aliases: string[] = [];
+  abstract aliases: string[] | null;
   abstract cooldown: number;
-  abstract data: object = null;
+  abstract data: object | null;
   abstract permission: Command.Permissions = Command.Permissions.EVERYONE;
   abstract description: string;
-  abstract syntax: string[];
+  abstract syntax: string[] | null;
 
   abstract async execute(msg?: Command.Input, ...args: string[]): Promise<Command.Output>;
 
@@ -61,7 +61,7 @@ export abstract class Command {
   }
 
   static get(command: string): Command {
-    return this.commands.find((i) => i.name === command || i.aliases.includes(command));
+    return this.commands.find((i) => i.name === command || i.aliases?.includes?.(command));
   }
 }
 

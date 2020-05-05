@@ -6,7 +6,7 @@ export class RandomMCUVerse extends Command {
   name = 'randommcuverse';
   aliases = ['rmcuv', 'randommarvelcinematicuniverseverse'];
   description = 'Returns a random quote from MCU as a Bible verse';
-  syntax = [];
+  syntax = null;
   cooldown = 5000;
   data = { verses: null };
   permission = Command.Permissions.EVERYONE;
