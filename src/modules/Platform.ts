@@ -59,7 +59,7 @@ export abstract class Platform {
     rawMessage,
     user,
     channel,
-    timestamp,
+    timestamp = new Date(),
     type,
   }: RawInput): Promise<void> {
     const manager = getManager();
@@ -142,6 +142,7 @@ export abstract class Platform {
 export namespace Platform {
   export enum Names {
     TWITCH = 'Twitch',
+    MIXER = 'Mixer',
   }
 }
 
@@ -152,6 +153,6 @@ export interface RawInput {
   };
   channel: ChannelLike;
   rawMessage: string;
-  timestamp: Date;
+  timestamp?: Date;
   type: MessageType;
 }

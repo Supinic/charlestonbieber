@@ -1,5 +1,5 @@
 # CharlestonBieber
-Dank Twitch bot.
+Dank multiplatform bot.
 
 ## Getting started
 1. Clone this repository

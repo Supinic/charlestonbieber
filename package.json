@@ -1,7 +1,7 @@
 {
   "name": "charlestonbieber",
   "version": "3.0.0",
-  "description": "Dank Twitch bot.",
+  "description": "Dank multiplatform bot.",
   "main": "build/index.js",
   "scripts": {
     "start": "node -r dotenv/config build/index.js",
@@ -25,6 +25,7 @@
   },
   "homepage": "https://github.com/caglapickaxe/charlestonbieber#readme",
   "dependencies": {
+    "@mixer/client-node": "^3.5.0",
     "dank-twitch-irc": "^3.0.7",
     "dotenv": "^8.2.0",
     "escape-string-regexp": "^3.0.0",

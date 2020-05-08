@@ -16,19 +16,21 @@ export class Ping extends Command {
   permission = Command.Permissions.EVERYONE;
 
   async execute({ platform }: Command.Input): Promise<Command.Output> {
-    let latency: number;
+    let latency: string;
 
     if (platform === Platform.get(Platform.Names.TWITCH)) {
       const start = process.hrtime.bigint();
       await (platform as Twitch).client.ping();
       const end = process.hrtime.bigint();
 
-      latency = Math.round(Number(end - start) / 1e6);
+      latency = `${Math.round(Number(end - start) / 1e6)}ms`;
+    } else {
+      latency = 'Could not calculate';
     }
 
     const data = {
       Uptime: timeDelta(new Date(Date.now() - process.uptime() * 1000), true),
-      Latency: `${latency}ms`,
+      Latency: latency,
     };
 
     return { reply: `FeelsDankMan 🏓 pong! ${createResponseFromObject(data)}` };
