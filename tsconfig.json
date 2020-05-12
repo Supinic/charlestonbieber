@@ -10,6 +10,7 @@
     "target": "ES5",
     "sourceMap": true,
     "skipLibCheck": true,
+    "downlevelIteration": true,
   },
   "include": ["src"],
   "exclude": [

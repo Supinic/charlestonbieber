@@ -134,3 +134,16 @@ export namespace Misia {
     }
   }
 }
+
+export interface Lyrics {
+  title: string;
+  author: string;
+  lyrics: string;
+  thumbnail: {
+    genius?: string;
+  };
+  links: {
+    genius: string;
+  };
+  error: string;
+}

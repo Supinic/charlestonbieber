@@ -1,5 +1,6 @@
-import got from 'got';
+import { Lyrics as APIResponse } from './types';
 import { Command } from '../modules';
+import { someRandomAPI } from '../modules/GotInstances';
 
 export class Lyrics extends Command {
   name = 'lyrics';
@@ -21,8 +22,8 @@ export class Lyrics extends Command {
 
     const lyrics = args.join(' ');
 
-    const data: Lyrics.APIResponse = await got({
-      url: 'https://some-random-api.ml/lyrics',
+    const data: APIResponse = await someRandomAPI({
+      url: 'lyrics',
       searchParams: { title: lyrics },
     }).json();
 
@@ -35,20 +36,5 @@ export class Lyrics extends Command {
     }
 
     return { reply: `I guess that song is ${data.title} by ${data.author}` };
-  }
-}
-
-namespace Lyrics {
-  export interface APIResponse {
-    title: string;
-    author: string;
-    lyrics: string;
-    thumbnail: {
-      genius?: string;
-    };
-    links: {
-      genius: string;
-    };
-    error: string;
   }
 }

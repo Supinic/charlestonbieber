@@ -12,3 +12,4 @@ export * from './Query';
 export * from './Pipe';
 export * from './Misia';
 export * from './AFK';
+export * from './RandomLyrics';
