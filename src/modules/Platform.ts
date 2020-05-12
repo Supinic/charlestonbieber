@@ -93,7 +93,6 @@ export abstract class Platform {
         userObject.name = user.name;
         userObject.platformID = user.platformID;
         userObject.platform = this.name;
-        userObject.location = [];
 
         await manager.save(userObject);
       }

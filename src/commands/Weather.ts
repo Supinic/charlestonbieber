@@ -1,11 +1,6 @@
 import got from 'got';
 import { WeatherData } from './types';
-import {
-  Command,
-  UserManager,
-  getOption,
-  createResponseFromObject,
-} from '../modules';
+import { Command, getOption, createResponseFromObject } from '../modules';
 
 export class Weather extends Command {
   name = 'weather';
@@ -83,30 +78,8 @@ export class Weather extends Command {
       }
     }
 
-    for (let i = 0; i < args.length; i += 1) {
-      const token = args[i];
-
-      if (token.startsWith('@')) {
-        const user = await UserManager.get(token.slice(1));
-
-        if (user?.location) {
-          const [lat, lon] = user.location;
-
-          searchParams.lat = lat;
-          searchParams.lon = lon;
-
-          args.splice(i, 1);
-        }
-      }
-    }
-
     if (args.length > 0) {
       searchParams.q = args.join(' ');
-    } else if (!('lat' in searchParams && 'lon' in searchParams) && msg.user.location) {
-      const [lat, lon] = msg.user.location;
-
-      searchParams.lat = lat;
-      searchParams.lon = lon;
     } else if (!('lat' in searchParams && 'lon' in searchParams)) {
       return {
         reply: 'A location must be provided',

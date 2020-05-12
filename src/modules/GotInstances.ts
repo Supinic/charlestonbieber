@@ -10,11 +10,6 @@ export const supi = json.extend({
   },
 });
 
-export const bingMaps = json.extend({
-  prefixUrl: 'https://dev.virtualearth.net/REST/v1',
-  searchParams: { key: process.env.BING_MAPS_KEY },
-});
-
 export const misia = got.extend({
   prefixUrl: 'https://kotmisia.pl/api',
   headers: { 'User-Agent': process.env.TWITCH_USERNAME },
