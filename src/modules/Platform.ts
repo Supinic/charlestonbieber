@@ -81,10 +81,13 @@ export abstract class Platform {
       }
     }
 
-    if (rawMessage.startsWith(channelObject.prefix)) {
+    if (
+      rawMessage.startsWith(channelObject?.prefix)
+        || (type === 'pm' && rawMessage.startsWith(process.env.DEFAULT_PREFIX))
+    ) {
       const [cmd, ...args] = rawMessage
         .replace(/[\u034f\u2800\u{E0000}\u180e\ufeff\u2000-\u200d\u206D]/gu, '')
-        .slice(channelObject.prefix.length)
+        .slice(channelObject?.prefix?.length ?? process.env.DEFAULT_PREFIX.length)
         .split(' ');
       const command = Command.get(cmd);
 
