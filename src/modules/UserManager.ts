@@ -9,3 +9,9 @@ export class UserManager {
       .find((i) => i.name === identifier || i.id === identifier || i.platformID === identifier);
   }
 }
+
+export const enum Levels {
+  USER = 'user',
+  TRUSTED = 'trusted',
+  ADMIN = 'admin',
+}

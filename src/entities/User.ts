@@ -1,5 +1,5 @@
 import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
-import { Platform } from '../modules';
+import { Platform, Levels } from '../modules';
 
 @Entity()
 export class User {
@@ -14,6 +14,9 @@ export class User {
 
   @Column()
   platformID: string;
+
+  @Column({ default: Levels.USER })
+  level: Levels;
 
   @Column()
   firstSeen: Date;

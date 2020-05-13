@@ -1,4 +1,11 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Entity,
+  Column,
+  JoinColumn,
+  PrimaryGeneratedColumn,
+  OneToOne,
+} from 'typeorm';
+import { User } from '.';
 import { Platform, BanphraseTypes } from '../modules';
 
 @Entity()
@@ -14,6 +21,10 @@ export class Channel {
 
   @Column()
   platformID: string;
+
+  @OneToOne(() => User, { nullable: true })
+  @JoinColumn()
+  broadcaster?: User;
 
   @Column({ default: process.env.DEFAULT_PREFIX })
   prefix: string;

@@ -1,5 +1,10 @@
 import { getManager } from 'typeorm';
-import { Command } from '../modules';
+import {
+  Command,
+  UserManager,
+  PermissionMultiplexer,
+  Levels,
+} from '../modules';
 
 export class Set extends Command {
   name = 'set';
@@ -10,7 +15,7 @@ export class Set extends Command {
   data = null;
   permission = Command.Permissions.EVERYONE;
 
-  async execute(msg: Command.Input, variable: 'prefix', ...args: string[]): Promise<Command.Output> {
+  async execute(msg: Command.Input, variable: 'prefix' | 'level', ...args: string[]): Promise<Command.Output> {
     if (!variable) {
       return {
         reply: 'A variable must be provided',
@@ -28,10 +33,11 @@ export class Set extends Command {
     }
 
     const manager = getManager();
+    const permissionLevel = PermissionMultiplexer.getUserPermissions(msg.user, msg.channel);
 
     switch (variable) {
       case 'prefix': {
-        if (msg.user.id !== 1) {
+        if (permissionLevel < Command.Permissions.TRUSTED) {
           return;
         }
 
@@ -41,6 +47,40 @@ export class Set extends Command {
         await manager.save(channel);
 
         return { reply: `Prefix for this channel has been successfully set to ${channel.prefix}` };
+      }
+
+      case 'level': {
+        if (permissionLevel < Command.Permissions.ADMIN) {
+          return;
+        }
+
+        const [username, level] = args.map((i) => i.toLowerCase());
+        const user = await UserManager.get(username);
+
+        if (!user) {
+          return {
+            reply: 'No user found with that username.',
+            success: false,
+          };
+        }
+
+        const levels = {
+          admin: Levels.ADMIN,
+          trusted: Levels.TRUSTED,
+          user: Levels.USER,
+        };
+
+        if (!(level in levels)) {
+          return {
+            reply: 'Could not find that level',
+            success: false,
+          };
+        }
+
+        user.level = levels[level];
+        await manager.save(user);
+
+        return { reply: `Successfully updated ${user.name}'s level to ${level}.` };
       }
 
       default:

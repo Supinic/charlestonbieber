@@ -10,7 +10,7 @@ export class Debug extends Command {
   cooldown = 0;
   description = 'Runs JavaScript and returns the result.';
   syntax = ['code'];
-  permission = Command.Permissions.OWNER;
+  permission = Command.Permissions.ADMIN;
   data = null;
 
   async execute(msg: Command.Input, ...args: string[]): Promise<Command.Output> {

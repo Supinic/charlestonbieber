@@ -1,4 +1,4 @@
-import { getManager } from 'typeorm';
+import { getManager, getRepository } from 'typeorm';
 import { Channel } from '../entities';
 import { Platform } from './Platform';
 
@@ -8,7 +8,7 @@ export class ChannelManager {
   static async get(identifier: ChannelLike): Promise<Channel> {
     return identifier instanceof Channel
       ? identifier
-      : (await getManager().find(Channel))
+      : (await getRepository(Channel).find({ relations: ['broadcaster'] }))
         .find((i) => i.name === identifier || i.id === identifier || i.platformID === identifier);
   }
 

@@ -6,7 +6,7 @@ export class Echo extends Command {
   description = 'Writes a line into chat';
   syntax = ['text'];
   cooldown = 0;
-  permission = Command.Permissions.OWNER;
+  permission = Command.Permissions.TRUSTED;
   data = null;
 
   async execute(_msg: Command.Input, ...args: string[]): Promise<Command.Output> {

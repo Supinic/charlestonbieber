@@ -1,5 +1,5 @@
 import { Channel, User } from '../entities';
-import { Platform } from '.';
+import { Platform, PermissionMultiplexer } from '.';
 
 export abstract class Command {
   abstract name: string;
@@ -12,23 +12,15 @@ export abstract class Command {
 
   abstract async execute(msg?: Command.Input, ...args: string[]): Promise<Command.Output>;
 
-  checkPermission(msg: Command.Input): Command.Output | null {
-    switch (this.permission) {
-      case Command.Permissions.BROADCASTER:
-        if (msg.user.platformID !== msg.channel.platformID) {
-          return { reply: 'Only the broadcaster can use this command.' };
-        }
-        break;
+  checkPermission(msg: Command.Input): undefined | Command.Output {
+    const permissionLevel = PermissionMultiplexer.getUserPermissions(msg.user, msg.channel);
+    const permissionMap = new Map<Command.Permissions, string>()
+      .set(Command.Permissions.BROADCASTER, 'the broadcaster')
+      .set(Command.Permissions.TRUSTED, 'trusted users')
+      .set(Command.Permissions.ADMIN, 'admins');
 
-      case Command.Permissions.OWNER:
-        if (msg.user.id !== 1) {
-          return { reply: 'Only my owner can use this command.' };
-        }
-        break;
-
-      case Command.Permissions.EVERYONE:
-      default:
-        break;
+    if (permissionLevel < this.permission) {
+      return { reply: `Only ${permissionMap.get(this.permission)} can use this command!` };
     }
   }
 
@@ -85,9 +77,11 @@ export namespace Command {
     noUsername?: boolean;
   }
 
+  /* eslint-disable no-bitwise */
   export enum Permissions {
-    OWNER = 1,
-    BROADCASTER = 2,
     EVERYONE = 0,
+    BROADCASTER = 1 << 0,
+    TRUSTED = 1 << 1,
+    ADMIN = 1 << 2,
   }
 }

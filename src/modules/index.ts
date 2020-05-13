@@ -6,3 +6,4 @@ export * from './Util';
 export * from './StaticCommandManager';
 export * from './Banphrase';
 export * from './CooldownManager';
+export * from './PermissionMultiplexer';
