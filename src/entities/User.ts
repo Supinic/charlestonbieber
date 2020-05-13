@@ -14,4 +14,7 @@ export class User {
 
   @Column()
   platformID: string;
+
+  @Column()
+  firstSeen: Date;
 }

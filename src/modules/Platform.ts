@@ -67,6 +67,16 @@ export abstract class Platform {
     const channelObject = await ChannelManager.get(channel);
     let userObject = await UserManager.get(user.platformID);
 
+    if (!userObject) {
+      userObject = new User();
+      userObject.name = user.name;
+      userObject.platformID = user.platformID;
+      userObject.platform = this.name;
+      userObject.firstSeen = timestamp;
+
+      await manager.save(userObject);
+    }
+
     const afk = (await getRepository(AFK).find({ relations: ['user'] }))
       .find((i) => i.active && i.user.id === userObject?.id);
 
@@ -90,15 +100,6 @@ export abstract class Platform {
         .slice(channelObject?.prefix?.length ?? process.env.DEFAULT_PREFIX.length)
         .split(' ');
       const command = Command.get(cmd);
-
-      if (!userObject) {
-        userObject = new User();
-        userObject.name = user.name;
-        userObject.platformID = user.platformID;
-        userObject.platform = this.name;
-
-        await manager.save(userObject);
-      }
 
       if (command && !this.slowMode) {
         const cooldownObject: Cooldown = {
