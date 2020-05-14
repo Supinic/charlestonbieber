@@ -55,7 +55,7 @@ export class Set extends Command {
         }
 
         const [username, level] = args.map((i) => i.toLowerCase());
-        const user = await UserManager.get(username);
+        const user = await UserManager.get(username, msg.platform);
 
         if (!user) {
           return {

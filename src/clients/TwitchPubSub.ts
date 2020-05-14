@@ -66,7 +66,10 @@ export class PubSub extends Platform {
           if (data) {
             const message: MessageMessage = JSON.parse(data.message);
             const { topic } = data;
-            const channel = await ChannelManager.get(topic.replace(/^(video-playback|community-points-channel-v1)\./, ''));
+            const channel = await ChannelManager.get(
+              topic.replace(/^(video-playback|community-points-channel-v1)\./, ''),
+              Platform.get(Platform.Names.TWITCH),
+            );
 
             switch (message.type) {
               case 'viewcount':

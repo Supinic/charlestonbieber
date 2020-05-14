@@ -64,8 +64,8 @@ export abstract class Platform {
   }: RawInput): Promise<void> {
     const manager = getManager();
 
-    const channelObject = await ChannelManager.get(channel);
-    let userObject = await UserManager.get(user.platformID);
+    const channelObject = await ChannelManager.get(channel, this);
+    let userObject = await UserManager.get(user.platformID, this);
 
     if (!userObject) {
       userObject = new User();
