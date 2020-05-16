@@ -1,5 +1,5 @@
 import { Channel, User } from '../entities';
-import { Platform, PermissionMultiplexer } from '.';
+import { Platform } from '.';
 
 export abstract class Command {
   abstract name: string;
@@ -12,14 +12,13 @@ export abstract class Command {
 
   abstract async execute(msg?: Command.Input, ...args: string[]): Promise<Command.Output>;
 
-  checkPermission(msg: Command.Input): undefined | Command.Output {
-    const permissionLevel = PermissionMultiplexer.getUserPermissions(msg.user, msg.channel);
+  checkPermission({ permission }: Command.Input): undefined | Command.Output {
     const permissionMap = new Map<Command.Permissions, string>()
       .set(Command.Permissions.BROADCASTER, 'the broadcaster')
       .set(Command.Permissions.TRUSTED, 'trusted users')
       .set(Command.Permissions.ADMIN, 'admins');
 
-    if (permissionLevel < this.permission) {
+    if (permission < this.permission) {
       return { reply: `Only ${permissionMap.get(this.permission)} can use this command!` };
     }
   }
@@ -68,6 +67,7 @@ export namespace Command {
     executedCommand: string;
     timestamp: Date;
     type: MessageType;
+    permission: Permissions;
   }
 
   export interface Output {

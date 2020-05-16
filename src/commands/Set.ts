@@ -1,10 +1,5 @@
 import { getManager } from 'typeorm';
-import {
-  Command,
-  UserManager,
-  PermissionMultiplexer,
-  Levels,
-} from '../modules';
+import { Command, UserManager, Levels } from '../modules';
 
 export class Set extends Command {
   name = 'set';
@@ -33,11 +28,10 @@ export class Set extends Command {
     }
 
     const manager = getManager();
-    const permissionLevel = PermissionMultiplexer.getUserPermissions(msg.user, msg.channel);
 
     switch (variable) {
       case 'prefix': {
-        if (permissionLevel < Command.Permissions.TRUSTED) {
+        if (msg.permission < Command.Permissions.TRUSTED) {
           return;
         }
 
@@ -50,7 +44,7 @@ export class Set extends Command {
       }
 
       case 'level': {
-        if (permissionLevel < Command.Permissions.ADMIN) {
+        if (msg.permission < Command.Permissions.ADMIN) {
           return;
         }
 

@@ -1,6 +1,7 @@
 import { getManager, getRepository } from 'typeorm';
 import { Channel, User, AFK } from '../entities';
 import {
+  PermissionMultiplexer,
   ChannelManager,
   ChannelLike,
   UserManager,
@@ -9,8 +10,8 @@ import {
   Cooldown,
   MessageType,
   timeDelta,
+  cleanBanphrases,
 } from '.';
-import { cleanBanphrases } from './Banphrase';
 
 export abstract class Platform {
   abstract name: Platform.Names;
@@ -111,11 +112,12 @@ export abstract class Platform {
           const result = await command.finalExecute({
             user: userObject,
             channel: channelObject,
+            platform: this,
+            executedCommand: cmd,
+            permission: PermissionMultiplexer.getUserPermissions(userObject, channelObject),
             timestamp,
             rawMessage,
             type,
-            platform: this,
-            executedCommand: cmd,
           }, ...args);
 
           if (!result) {
