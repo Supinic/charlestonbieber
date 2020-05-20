@@ -65,7 +65,7 @@ export class RandomLyrics extends Command {
     )]);
 
     return {
-      reply: `${lyrics} (${data.title} by ${data.author})`,
+      reply: `${lyrics} (${data.author} - ${data.title})`,
       cooldown: usingCurrent ? 10000 : this.cooldown,
     };
   }

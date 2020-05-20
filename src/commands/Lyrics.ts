@@ -35,6 +35,6 @@ export class Lyrics extends Command {
       };
     }
 
-    return { reply: `I guess that song is ${data.title} by ${data.author}` };
+    return { reply: `I guess that song is: "${data.author} - ${data.title}".` };
   }
 }
