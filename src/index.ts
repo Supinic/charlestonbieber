@@ -1,9 +1,14 @@
-import { createConnection } from 'typeorm';
+import { createConnection, getConnectionOptions } from 'typeorm';
 import { Platform, Command, StaticCommandManager } from './modules';
 import { supi } from './modules/GotInstances';
-import ormConfig from './ormConfig';
+import * as entities from './entities';
 
-createConnection(ormConfig).then(async ({ manager }) => {
+getConnectionOptions().then(async (connectionOptions) => {
+  const { manager } = await createConnection({
+    ...connectionOptions,
+    entities: Object.values(entities),
+  });
+
   await StaticCommandManager.init(manager);
 
   await Command.load();

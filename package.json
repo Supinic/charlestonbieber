@@ -30,7 +30,6 @@
     "dotenv": "^8.2.0",
     "escape-string-regexp": "^3.0.0",
     "got": "^11.1.0",
-    "sqlite3": "^4.2.0",
     "typeorm": "next",
     "ws": "^7.2.5"
   },
