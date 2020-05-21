@@ -1,7 +1,7 @@
-export * from './Channel';
-export * from './User';
-export * from './MCUVerse';
-export * from './StaticComand';
-export * from './Suggestion';
-export * from './Banphrase';
-export * from './AFK';
+export { Channel } from './Channel';
+export { User } from './User';
+export { MCUVerse } from './MCUVerse';
+export { StaticCommand } from './StaticComand';
+export { Suggestion } from './Suggestion';
+export { Banphrase } from './Banphrase';
+export { AFK } from './AFK';
