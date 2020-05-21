@@ -13,7 +13,7 @@ export class Help extends Command {
     { executedCommand, channel: { prefix } }: Command.Input,
     command: string,
   ): Promise<Command.Output> {
-    if (executedCommand === 'commands') {
+    if (!command || executedCommand === 'commands') {
       const commands = Command.commands
         .map((i) => i.name)
         .filter((i) => i !== null)
@@ -22,17 +22,9 @@ export class Help extends Command {
       return { reply: `Available commands: ${commands}` };
     }
 
-    if (!command) {
-      return {
-        reply: 'No command specified',
-        cooldown: 2500,
-        success: false,
-      };
-    }
-
     const cmd = Command.get(command);
 
-    if (!command || !cmd.name) {
+    if (!cmd || !cmd.name) {
       return {
         reply: 'Could not find that command',
         cooldown: 2500,
