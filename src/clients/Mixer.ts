@@ -42,7 +42,7 @@ export class Mixer extends Platform {
   }
 
   async getUserInfo(): Promise<IUserSelf> {
-    const { body }: { body: IUserSelf } = await this.client.request('GET', 'users/current');
+    const { body } = await this.client.request<IUserSelf>('GET', 'users/current');
 
     return body;
   }
@@ -58,7 +58,7 @@ export class Mixer extends Platform {
     // @ts-ignore
     const socket = new Socket(WebSocket, endpoints).boot();
 
-    socket.on('ChatMessage', async (data: IChatMessage) => await super.handleMessage({
+    socket.on('ChatMessage', (data: IChatMessage) => super.handleMessage({
       type: 'message',
       rawMessage: data.message.message[0].text,
       user: {
@@ -68,15 +68,19 @@ export class Mixer extends Platform {
       channel,
     }));
 
-    await socket.auth(channel.platformID, userID, authkey);
+    socket.on('error', (error: Error) => console.error(`${Mixer.name}:`, error));
+
+    socket.on('reconnecting', () => console.info('Reconnecting to Mixer socket:', channel));
+
+    await socket.auth(Number(channel.platformID), userID, authkey);
 
     return socket;
   }
 
   async message(channel: Channel, message: string): Promise<void> {
-    this.channels.get(channel).call('msg', [message]);
+    await this.channels.get(channel).call('msg', [message]);
   }
 
   // eslint-disable-next-line @typescript-eslint/no-empty-function
-  async pm(): Promise<void> {}
+  async pm(): Promise<void> { }
 }

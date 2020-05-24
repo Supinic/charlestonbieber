@@ -24,7 +24,7 @@ interface MessageMessage {
   viewers?: number;
 }
 
-export class PubSub extends Platform {
+export class TwitchPubSub extends Platform {
   // @ts-ignore
   name = 'PubSub';
   client: WebSocket;
@@ -54,8 +54,8 @@ export class PubSub extends Platform {
       this.ping = setInterval(() => this.sendData('PING'), 3e5);
     });
 
-    this.client.on('message', async (stringifiedData) => {
-      const { data, type }: PubSubMessage<Message> = JSON.parse(stringifiedData as string);
+    this.client.on('message', async (stringifiedData: string) => {
+      const { data, type }: PubSubMessage<Message> = JSON.parse(stringifiedData);
 
       switch (type) {
         case 'PONG':
@@ -110,12 +110,14 @@ export class PubSub extends Platform {
       }
     });
 
-    this.client.on('close', () => {
+    this.client.on('error', (error) => console.error(`${TwitchPubSub.name}:`, error));
+
+    this.client.on('close', () => setTimeout(() => {
       clearInterval(this.ping);
 
       this.client = null;
       this.connect();
-    });
+    }, 7500));
   }
 
   constructor() {
@@ -136,6 +138,6 @@ export class PubSub extends Platform {
     }));
   }
 
-  async message(): Promise<void> {}
-  async pm(): Promise<void> {}
+  async message(): Promise<void> { }
+  async pm(): Promise<void> { }
 }
