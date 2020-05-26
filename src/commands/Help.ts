@@ -32,12 +32,27 @@ export class Help extends Command {
       };
     }
 
-    const syntax = cmd.syntax?.map?.((i) => `<${i}>`) || '';
+    const syntax = this.createSyntax(cmd);
     const cooldown = cmd.cooldown / 1000;
     const aliases = cmd.aliases
       ? `(${cmd.aliases.join(', ')})`
       : '';
 
     return { reply: `${prefix}${cmd.name} ${aliases} ${syntax} | ${cmd.description} | Cooldown: ${cooldown} seconds` };
+  }
+
+  private createHelpFromSyntax(syntax: string[]): string {
+    return syntax.map((i) => `<${i}>`).join(' ');
+  }
+
+  private createSyntax({ syntax }: Command): string {
+    const hasMultipleSyntaxes = !!syntax && !Array.isArray(syntax);
+
+    return hasMultipleSyntaxes
+      ? Object.entries(syntax).map(([name, definition]) => [
+        name,
+        this.createHelpFromSyntax(definition),
+      ].join(' ')).join(' / ')
+      : this.createHelpFromSyntax(syntax as string[] ?? []);
   }
 }

@@ -8,7 +8,7 @@ export abstract class Command {
   abstract data: object | null;
   abstract permission: Command.Permissions = Command.Permissions.EVERYONE;
   abstract description: string;
-  abstract syntax: string[] | null;
+  abstract syntax: string[] | { [name: string]: string[] } | null;
 
   abstract async execute(msg?: Command.Input, ...args: string[]): Promise<Command.Output>;
 

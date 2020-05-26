@@ -4,7 +4,10 @@ import { Command, UserManager, Levels } from '../modules';
 export class Set extends Command {
   name = 'set';
   aliases = null;
-  syntax = ['variable', 'value'];
+  syntax = {
+    prefix: ['prefix'],
+    level: ['user', 'level'],
+  };
   description = 'Allows users/the bot owner to customize their variables within the bot';
   cooldown = 10000;
   data = null;
