@@ -1,6 +1,6 @@
 {
   "name": "charlestonbieber",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "description": "Dank multiplatform bot.",
   "main": "build/index.js",
   "scripts": {
@@ -19,7 +19,7 @@
     "bot"
   ],
   "author": "caglapickaxe",
-  "license": "GPL-3.0",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/caglapickaxe/charlestonbieber/issues"
   },
