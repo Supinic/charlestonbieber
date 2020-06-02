@@ -17,7 +17,4 @@ export class User {
 
   @Column({ default: Levels.USER })
   level: Levels;
-
-  @Column()
-  firstSeen: Date;
 }

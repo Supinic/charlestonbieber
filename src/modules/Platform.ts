@@ -68,16 +68,6 @@ export abstract class Platform {
     const channelObject = await ChannelManager.get(channel, this);
     let userObject = await UserManager.get(user.platformID, this);
 
-    if (!userObject) {
-      userObject = new User();
-      userObject.name = user.name;
-      userObject.platformID = user.platformID;
-      userObject.platform = this.name;
-      userObject.firstSeen = timestamp;
-
-      await manager.save(userObject);
-    }
-
     const afk = (await getRepository(AFK).find({ relations: ['user'] }))
       .find((i) => i.active && i.user.id === userObject?.id);
 
@@ -88,13 +78,13 @@ export abstract class Platform {
       await manager.save(afk);
 
       if (type === 'message') {
-        await this.send(type, channelObject, `${afk.user.name} is no longer AFK: ${afk.message || '(no message)'} (${timeDelta(afk.start)})`);
+        await this.send(type, channelObject, `${afk.user.name} is no longer AFK: ${afk.message || '(no message)'} (${timeDelta(afk.start, timestamp)})`);
       }
     }
 
     if (
       rawMessage.startsWith(channelObject?.prefix)
-        || (type === 'pm' && rawMessage.startsWith(process.env.DEFAULT_PREFIX))
+      || (type === 'pm' && rawMessage.startsWith(process.env.DEFAULT_PREFIX))
     ) {
       const [cmd, ...args] = rawMessage
         .replace(/[\u034f\u2800\u{E0000}\u180e\ufeff\u2000-\u200d\u206D]/gu, '')
@@ -109,6 +99,15 @@ export abstract class Platform {
         };
 
         if (!CooldownManager.has(cooldownObject)) {
+          if (!userObject) {
+            userObject = new User();
+            userObject.name = user.name;
+            userObject.platformID = user.platformID;
+            userObject.platform = this.name;
+
+            await manager.save(userObject);
+          }
+
           const result = await command.finalExecute({
             user: userObject,
             channel: channelObject,
