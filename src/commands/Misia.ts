@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/camelcase */
+/* eslint-disable @typescript-eslint/naming-convention */
 import { Misia as KotMisia } from './types';
 import { Command, addInvisibleChars } from '../modules';
 import { misia } from '../modules/GotInstances';
@@ -13,7 +13,7 @@ export class Misia extends Command {
   data = null;
 
   async execute(
-    _msg: Command.Input,
+    msg: Command.Input,
     command: 'test' | 'suggestions',
     ...args: string[]
   ): Promise<Command.Output> {

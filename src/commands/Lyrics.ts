@@ -11,7 +11,7 @@ export class Lyrics extends Command {
   data = null;
   permission = Command.Permissions.EVERYONE;
 
-  async execute(_msg: Command.Input, ...args: string[]): Promise<Command.Output> {
+  async execute(msg: Command.Input, ...args: string[]): Promise<Command.Output> {
     if (args.length === 0) {
       return {
         reply: 'Lyrics must be provided',

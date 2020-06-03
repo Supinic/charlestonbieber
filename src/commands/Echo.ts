@@ -9,7 +9,7 @@ export class Echo extends Command {
   permission = Command.Permissions.TRUSTED;
   data = null;
 
-  async execute(_msg: Command.Input, ...args: string[]): Promise<Command.Output> {
+  async execute(msg: Command.Input, ...args: string[]): Promise<Command.Output> {
     return {
       reply: args.join(' ') || 'xd',
       noUsername: true,

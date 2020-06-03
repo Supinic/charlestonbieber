@@ -10,7 +10,7 @@ export class Query extends Command {
   data = null;
   permission = Command.Permissions.EVERYONE;
 
-  async execute(_msg: Command.Input, ...args: string[]): Promise<Command.Output> {
+  async execute(msg: Command.Input, ...args: string[]): Promise<Command.Output> {
     const searchParams: {
       units: 'metric' | 'imperial';
       appid: string;

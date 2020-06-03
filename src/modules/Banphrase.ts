@@ -1,9 +1,9 @@
-/* eslint-disable @typescript-eslint/camelcase */
+/* eslint-disable @typescript-eslint/naming-convention */
 import got from 'got';
 import escapeStringRegexp from 'escape-string-regexp';
 import { getRepository } from 'typeorm';
 import { Channel, Banphrase } from '../entities';
-import { Platform } from '.';
+import type { Platform } from '.';
 
 export enum BanphraseTypes {
   PAJBOT = 'Pajbot',

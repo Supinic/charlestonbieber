@@ -46,7 +46,7 @@ export class TwitchPubSub extends Platform {
             this.createTopic('video-playback', name),
             this.createTopic('community-points-channel-v1', platformID),
           ],
-          // eslint-disable-next-line @typescript-eslint/camelcase
+          // eslint-disable-next-line @typescript-eslint/naming-convention
           auth_token: process.env.TWITCH_PASSWORD,
         });
       }

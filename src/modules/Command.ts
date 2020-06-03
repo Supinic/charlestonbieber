@@ -1,14 +1,14 @@
-import { Channel, User } from '../entities';
-import { Platform } from '.';
+import type { Channel, User } from '../entities';
+import type { Platform } from '.';
 
 export abstract class Command {
   abstract name: string;
   abstract aliases: string[] | null;
   abstract cooldown: number;
-  abstract data: object | null;
+  abstract data: Record<string, unknown> | null;
   abstract permission: Command.Permissions = Command.Permissions.EVERYONE;
   abstract description: string;
-  abstract syntax: string[] | { [name: string]: string[] } | null;
+  abstract syntax: string[] | { [name: string]: string[]; } | null;
 
   abstract async execute(msg?: Command.Input, ...args: string[]): Promise<Command.Output>;
 
@@ -48,6 +48,7 @@ export abstract class Command {
   static async load(): Promise<void> {
     const commands = await import('../commands');
 
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     this.commands = Object.values(commands).map((Cmd) => new Cmd());
   }
 

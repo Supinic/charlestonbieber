@@ -26,6 +26,7 @@ export abstract class Platform {
     const platforms = await import('../clients');
 
     // @ts-ignore
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     this.platforms = Object.values(platforms).map((Client) => new Client());
   }
 
@@ -63,13 +64,12 @@ export abstract class Platform {
     timestamp = new Date(),
     type,
   }: RawInput): Promise<void> {
-    const manager = getManager();
-
     const channelObject = await ChannelManager.get(channel, this);
     let userObject = await UserManager.get(user.platformID, this);
 
     const afk = (await getRepository(AFK).find({ relations: ['user'] }))
       .find((i) => i.active && i.user.id === userObject?.id);
+    const manager = getManager();
 
     if (afk) {
       afk.active = false;
@@ -78,7 +78,7 @@ export abstract class Platform {
       await manager.save(afk);
 
       if (type === 'message') {
-        await this.send(type, channelObject, `${afk.user.name} is no longer AFK: ${afk.message || '(no message)'} (${timeDelta(afk.start, timestamp)})`);
+        await this.send(type, channelObject, `${afk.user.name} is no longer AFK: ${afk.message || '(no message)'} (${timeDelta(afk.start)})`);
       }
     }
 
